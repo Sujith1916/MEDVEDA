@@ -1,0 +1,666 @@
+[
+  {
+    "code": "73211009",
+    "display": "Diabetes mellitus",
+    "fsn": "Diabetes mellitus (disorder)",
+    "synonyms": [
+      "Diabetes mellitus",
+      "DM - Diabetes mellitus",
+      "Diabetes",
+      "Diabetes mellitus disorder"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "44054006",
+    "display": "Type 2 diabetes mellitus",
+    "fsn": "Type 2 diabetes mellitus (disorder)",
+    "synonyms": [
+      "Type 2 diabetes mellitus",
+      "Type II diabetes mellitus",
+      "T2DM",
+      "Non-insulin dependent diabetes mellitus",
+      "NIDDM"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "46635009",
+    "display": "Type 1 diabetes mellitus",
+    "fsn": "Type 1 diabetes mellitus (disorder)",
+    "synonyms": [
+      "Type 1 diabetes mellitus",
+      "Type I diabetes mellitus",
+      "T1DM",
+      "Insulin-dependent diabetes mellitus",
+      "IDDM"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "38341003",
+    "display": "Hypertensive disorder",
+    "fsn": "Hypertensive disorder, systemic arterial (disorder)",
+    "synonyms": [
+      "Hypertension",
+      "High blood pressure",
+      "Hypertensive disease",
+      "Arterial hypertension"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "59621000",
+    "display": "Essential hypertension",
+    "fsn": "Essential hypertension (disorder)",
+    "synonyms": [
+      "Primary hypertension",
+      "Essential arterial hypertension",
+      "Idiopathic hypertension",
+      "Systemic essential hypertension"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "195967001",
+    "display": "Asthma",
+    "fsn": "Asthma (disorder)",
+    "synonyms": [
+      "Bronchial asthma",
+      "Asthmatic",
+      "Chronic asthmatic bronchitis"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "13645005",
+    "display": "Chronic obstructive lung disease",
+    "fsn": "Chronic obstructive lung disease (disorder)",
+    "synonyms": [
+      "Chronic obstructive pulmonary disease",
+      "COPD",
+      "Chronic airflow limitation",
+      "Chronic obstructive airway disease"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "233604007",
+    "display": "Pneumonia",
+    "fsn": "Pneumonia (disorder)",
+    "synonyms": [
+      "Infection of lung",
+      "Pulmonary infection",
+      "Pneumonitis",
+      "Lobar pneumonia"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "32398004",
+    "display": "Bronchitis",
+    "fsn": "Bronchitis (disorder)",
+    "synonyms": [
+      "Tracheobronchitis",
+      "Inflammation of bronchus",
+      "Acute bronchitis"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "399261000",
+    "display": "Osteoarthritis of knee",
+    "fsn": "Osteoarthritis of knee (disorder)",
+    "synonyms": [
+      "Knee osteoarthritis",
+      "Gonarthrosis",
+      "OA knee",
+      "Degenerative joint disease of knee"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "399269003",
+    "display": "Osteoarthritis of hip",
+    "fsn": "Osteoarthritis of hip (disorder)",
+    "synonyms": [
+      "Hip osteoarthritis",
+      "Coxarthrosis",
+      "OA hip",
+      "Degenerative joint disease of hip"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "69896004",
+    "display": "Rheumatoid arthritis",
+    "fsn": "Rheumatoid arthritis (disorder)",
+    "synonyms": [
+      "Atrophic arthritis",
+      "RA",
+      "Rheumatoid disease",
+      "Chronic rheumatoid arthritis"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "90560007",
+    "display": "Gout",
+    "fsn": "Gout (disorder)",
+    "synonyms": [
+      "Gouty arthritis",
+      "Podagra",
+      "Hyperuricemia with gout",
+      "Urate crystal arthropathy"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "37796009",
+    "display": "Migraine",
+    "fsn": "Migraine (disorder)",
+    "synonyms": [
+      "Migraine headache",
+      "Hemicrania",
+      "Common migraine",
+      "Classical migraine"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "398057008",
+    "display": "Tension-type headache",
+    "fsn": "Tension-type headache (disorder)",
+    "synonyms": [
+      "Tension headache",
+      "Muscle contraction headache",
+      "Stress headache"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "84757009",
+    "display": "Epilepsy",
+    "fsn": "Epilepsy (disorder)",
+    "synonyms": [
+      "Seizure disorder",
+      "Epileptic disorder",
+      "Recurrent convulsions"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "235595009",
+    "display": "Gastroesophageal reflux disease",
+    "fsn": "Gastroesophageal reflux disease (disorder)",
+    "synonyms": [
+      "GERD",
+      "GORD",
+      "Reflux esophagitis",
+      "Acid reflux",
+      "Heartburn"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "397825006",
+    "display": "Gastric ulcer",
+    "fsn": "Gastric ulcer (disorder)",
+    "synonyms": [
+      "Peptic ulcer",
+      "Stomach ulcer",
+      "Peptic ulcer disease",
+      "PUD"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "4556007",
+    "display": "Gastritis",
+    "fsn": "Gastritis (disorder)",
+    "synonyms": [
+      "Gastric inflammation",
+      "Stomach inflammation",
+      "Acute gastritis",
+      "Chronic gastritis"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "40930008",
+    "display": "Hypothyroidism",
+    "fsn": "Hypothyroidism (disorder)",
+    "synonyms": [
+      "Underactive thyroid",
+      "Deficiency of thyroid hormone",
+      "Thyroid insufficiency"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "34486009",
+    "display": "Hyperthyroidism",
+    "fsn": "Hyperthyroidism (disorder)",
+    "synonyms": [
+      "Overactive thyroid",
+      "Thyrotoxicosis",
+      "Excess thyroid hormone"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "38362002",
+    "display": "Dengue",
+    "fsn": "Dengue fever (disorder)",
+    "synonyms": [
+      "Dengue fever",
+      "Breakbone fever",
+      "Dengue virus infection",
+      "Classical dengue"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "61462000",
+    "display": "Malaria",
+    "fsn": "Malaria (disorder)",
+    "synonyms": [
+      "Paludism",
+      "Plasmodial disease",
+      "Plasmodium infection",
+      "Ague"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "4834000",
+    "display": "Typhoid fever",
+    "fsn": "Typhoid fever (disorder)",
+    "synonyms": [
+      "Enteric fever",
+      "Salmonella typhi infection",
+      "Typhoid",
+      "Abdominal typhus"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "9014002",
+    "display": "Psoriasis",
+    "fsn": "Psoriasis (disorder)",
+    "synonyms": [
+      "Psoriasis vulgaris",
+      "Plaque psoriasis",
+      "Chronic plaque psoriasis"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "24079001",
+    "display": "Atopic dermatitis",
+    "fsn": "Atopic dermatitis (disorder)",
+    "synonyms": [
+      "Atopic eczema",
+      "Infantile eczema",
+      "Allergic eczema"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "386661006",
+    "display": "Fever",
+    "fsn": "Fever (finding)",
+    "synonyms": [
+      "Pyrexia",
+      "Febrile",
+      "Elevated body temperature",
+      "High temp"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "49727002",
+    "display": "Cough",
+    "fsn": "Cough (finding)",
+    "synonyms": [
+      "Coughing",
+      "Tussis",
+      "Dry cough",
+      "Productive cough"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "267036007",
+    "display": "Dyspnea",
+    "fsn": "Dyspnea (finding)",
+    "synonyms": [
+      "Shortness of breath",
+      "Breathlessness",
+      "SOB",
+      "Labored breathing"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "84229001",
+    "display": "Fatigue",
+    "fsn": "Fatigue (finding)",
+    "synonyms": [
+      "Tiredness",
+      "Exhaustion",
+      "Lethargy",
+      "Weariness",
+      "Malaise"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "80394007",
+    "display": "Hyperglycemia",
+    "fsn": "Hyperglycemia (finding)",
+    "synonyms": [
+      "High blood glucose",
+      "Elevated blood sugar",
+      "High sugar level"
+    ],
+    "concept_type": "condition_disease"
+  },
+  {
+    "code": "387517004",
+    "display": "Paracetamol",
+    "fsn": "Paracetamol (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Paracetamol",
+      "Acetaminophen",
+      "APAP",
+      "Dolo",
+      "Crocin",
+      "Calpol",
+      "N-acetyl-p-aminophenol",
+      "p-acetamidophenol",
+      "Paracetamol 500 mg",
+      "Paracetamol 650 mg",
+      "Dolo 650",
+      "Crocin 500",
+      "Calpol 500"
+    ]
+  },
+  {
+    "code": "763158003",
+    "display": "Medicinal product containing paracetamol",
+    "fsn": "Medicinal product containing paracetamol (medicinal product)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Paracetamol product",
+      "Product containing paracetamol",
+      "Acetaminophen preparation"
+    ]
+  },
+  {
+    "code": "372567009",
+    "display": "Metformin",
+    "fsn": "Metformin (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Metformin",
+      "Metformin hydrochloride",
+      "Glucophage",
+      "Glycomet",
+      "Metformin 500 mg",
+      "Glycomet 500",
+      "Glycomet SR"
+    ]
+  },
+  {
+    "code": "386864001",
+    "display": "Amlodipine",
+    "fsn": "Amlodipine (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Amlodipine",
+      "Amlodipine besylate",
+      "Norvasc",
+      "Amlovas",
+      "Amlodipine 5 mg",
+      "Amlip",
+      "Stamlo"
+    ]
+  },
+  {
+    "code": "387584000",
+    "display": "Atorvastatin",
+    "fsn": "Atorvastatin (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Atorvastatin",
+      "Atorvastatin calcium",
+      "Lipitor",
+      "Atorva",
+      "Atorvastatin 10 mg",
+      "Atorlip",
+      "Storvas"
+    ]
+  },
+  {
+    "code": "387207008",
+    "display": "Pantoprazole",
+    "fsn": "Pantoprazole (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Pantoprazole",
+      "Pantoprazole sodium",
+      "Protonix",
+      "Pan-D",
+      "Pantocid",
+      "Pantoprazole 40 mg",
+      "Pan 40"
+    ]
+  },
+  {
+    "code": "387123000",
+    "display": "Omeprazole",
+    "fsn": "Omeprazole (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Omeprazole",
+      "Prilosec",
+      "Omez",
+      "Omeprazole 20 mg",
+      "Omee"
+    ]
+  },
+  {
+    "code": "372687004",
+    "display": "Amoxicillin",
+    "fsn": "Amoxicillin (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Amoxicillin",
+      "Amoxycillin",
+      "Amoxil",
+      "Mox",
+      "Amoxicillin 500 mg",
+      "Novamox"
+    ]
+  },
+  {
+    "code": "387531004",
+    "display": "Azithromycin",
+    "fsn": "Azithromycin (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Azithromycin",
+      "Zithromax",
+      "Azee",
+      "Azithral",
+      "Azithromycin 500 mg",
+      "Azee 500"
+    ]
+  },
+  {
+    "code": "387494007",
+    "display": "Cetirizine",
+    "fsn": "Cetirizine (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Cetirizine",
+      "Cetirizine hydrochloride",
+      "Zyrtec",
+      "Cetzine",
+      "Cetirizine 10 mg",
+      "Alerid",
+      "Okacet"
+    ]
+  },
+  {
+    "code": "387063004",
+    "display": "Losartan",
+    "fsn": "Losartan (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Losartan",
+      "Losartan potassium",
+      "Cozaar",
+      "Losacar",
+      "Losartan 50 mg",
+      "Repace"
+    ]
+  },
+  {
+    "code": "387425004",
+    "display": "Telmisartan",
+    "fsn": "Telmisartan (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Telmisartan",
+      "Micardis",
+      "Telma",
+      "Telmisartan 40 mg",
+      "Telvas"
+    ]
+  },
+  {
+    "code": "387458008",
+    "display": "Aspirin",
+    "fsn": "Aspirin (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Aspirin",
+      "Acetylsalicylic acid",
+      "ASA",
+      "Ecosprin",
+      "Disprin",
+      "Aspirin 75 mg",
+      "Aspirin 150 mg"
+    ]
+  },
+  {
+    "code": "387207001",
+    "display": "Ibuprofen",
+    "fsn": "Ibuprofen (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Ibuprofen",
+      "Advil",
+      "Motrin",
+      "Brufen",
+      "Ibuprofen 400 mg",
+      "Combiflam component"
+    ]
+  },
+  {
+    "code": "372897005",
+    "display": "Diclofenac",
+    "fsn": "Diclofenac (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Diclofenac",
+      "Diclofenac sodium",
+      "Voltaren",
+      "Voveran",
+      "Diclofenac 50 mg"
+    ]
+  },
+  {
+    "code": "372877000",
+    "display": "Ciprofloxacin",
+    "fsn": "Ciprofloxacin (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Ciprofloxacin",
+      "Ciprofloxacin hydrochloride",
+      "Cipro",
+      "Ciplox",
+      "Ciprofloxacin 500 mg"
+    ]
+  },
+  {
+    "code": "372665008",
+    "display": "Salbutamol",
+    "fsn": "Salbutamol (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Salbutamol",
+      "Albuterol",
+      "Ventolin",
+      "Asthalin",
+      "Salbutamol inhaler"
+    ]
+  },
+  {
+    "code": "387073000",
+    "display": "Levothyroxine",
+    "fsn": "Levothyroxine (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Levothyroxine",
+      "L-thyroxine",
+      "Synthroid",
+      "Thyronorm",
+      "Eltroxin",
+      "Levothyroxine 50 mcg"
+    ]
+  },
+  {
+    "code": "387460005",
+    "display": "Glimepiride",
+    "fsn": "Glimepiride (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Glimepiride",
+      "Amaryl",
+      "Zoryl",
+      "Glimepiride 1 mg",
+      "Glimepiride 2 mg"
+    ]
+  },
+  {
+    "code": "387342006",
+    "display": "Montelukast",
+    "fsn": "Montelukast (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Montelukast",
+      "Montelukast sodium",
+      "Singulair",
+      "Montair",
+      "Montelukast 10 mg"
+    ]
+  },
+  {
+    "code": "372756006",
+    "display": "Ranitidine",
+    "fsn": "Ranitidine (substance)",
+    "concept_type": "monograph_medicine",
+    "synonyms": [
+      "Ranitidine",
+      "Ranitidine hydrochloride",
+      "Zantac",
+      "Rantac",
+      "Aciloc",
+      "Ranitidine 150 mg"
+    ]
+  }
+]

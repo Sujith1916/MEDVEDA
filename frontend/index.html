@@ -1,571 +1,2984 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0076D2">
+  <meta name="description" content="MedVeda — prescription analysis and medicine insights.">
+  <title>MedVeda</title>
 
-    <title>Doctor vs Vaidya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Google Identity Services (OAuth 2.0 / Sign In with Google) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f6fc;
-            margin: 0;
-            padding: 0;
-            color: #243047;
-        }
+  <style>
+    :root {
+      --brand-blue: #0076D2;
+      --brand-blue-hover: #005FAF;
+      --brand-blue-deep: #064D8C;
+      --brand-teal: #01CBA8;
+      --brand-teal-deep: #008F7A;
+      --brand-green: #6DB501;
+      --brand-green-deep: #477900;
+      --ink: #173A52;
+      --muted: #647786;
+      --soft: #EFF9F7;
+      --line: #DCE9EF;
+      --max-width: 1160px;
+    }
 
-        header {
-            background-color: #173b63;
-            color: white;
-            text-align: center;
-            padding: 28px 15px;
-        }
+    * { box-sizing: border-box; }
 
-        header h1 {
-            margin: 0 0 10px;
-        }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 155px;
+    }
 
-        header p {
-            margin: 0;
-        }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: #F8FBFE;
+      font-family: 'Inter', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        main {
-            max-width: 850px;
-            margin: 35px auto;
-            padding: 25px;
-        }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    [hidden] { display: none !important; }
 
-        .card {
-            background-color: white;
-            padding: 25px;
-            margin-bottom: 22px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px #00000010;
-        }
+    a:focus-visible, button:focus-visible, input:focus-visible,
+    select:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(0, 118, 210, .24);
+      outline-offset: 2px;
+    }
 
-        .card h2 {
-            color: #173b63;
-            margin-top: 0;
-        }
+    /* TOP HEADER */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: rgba(251, 253, 255, .96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
 
-        .notice {
-            background-color: #fff5dc;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
+    .top-header-inner {
+      width: min(var(--max-width), calc(100% - 48px));
+      min-height: 90px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
 
-label {
-    display: block;
-    margin-top: 16px;
-    margin-bottom: 6px;
-    font-weight: bold;
-}
+    .brand {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
 
-input, select, textarea {
-    width: 100%;
-    padding: 11px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-family: inherit;
-    font-size: 15px;
-}
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 80px;
+      height: 80px;
+      flex: 0 0 80px;
+      overflow: hidden;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      transition: transform .18s ease;
+    }
 
-textarea {
-    resize: vertical;
-}
+    .brand-mark:hover {
+      transform: translateY(-1px);
+    }
 
-button {
-    margin-top: 20px;
-    padding: 12px 20px;
-    background-color: #176b55;
-    color: white;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 15px;
-}
+    .brand-mark img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
 
-button:hover {
-    background-color: #125440;
-}
+    .brand-copy { min-width: 0; }
+
+    .brand-name {
+      margin: 0;
+      color: var(--brand-blue);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 24px;
+      line-height: 1.15;
+      letter-spacing: -.55px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .brand-caption {
+      display: block;
+      margin-top: 4px;
+      color: #7E93A1;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      min-height: 42px;
+      padding: 0 19px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 750;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-teal-deep) 100%);
+      box-shadow: 0 8px 18px rgba(0, 118, 210, .18);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #0076D2, #064D8C);
+      box-shadow: 0 11px 22px rgba(0, 118, 210, .22);
+    }
+
+    .btn-outline {
+      color: var(--brand-blue-hover);
+      background: #fff;
+      border-color: #CBE5EC;
+    }
+
+    .btn-outline:hover { background: #EDF8FC; }
+
+    /* SECOND ROW: HORIZONTAL NAVIGATION BAR */
+    .main-navigation {
+      width: 100%;
+      background: linear-gradient(100deg, var(--brand-blue) 0%, var(--brand-blue-hover) 58%, var(--brand-teal-deep) 100%);
+      border-top: 1px solid rgba(255,255,255,.12);
+    }
+
+    .navigation-container {
+      width: min(var(--max-width), calc(100% - 32px));
+      min-height: 48px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 0 15px;
+      border-radius: 9px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .18s ease, transform .18s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(255,255,255,.16);
+      transform: translateY(-1px);
+    }
+
+    .nav-link.active { background: rgba(255,255,255,.22); }
+
+    /* HOMEPAGE HERO */
+    .home-hero {
+      width: 100%;
+      min-height: 520px;
+      padding: 62px max(5%, calc((100% - 1160px) / 2));
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 30px;
+      background: #F0F9FF;
+      background: linear-gradient(135deg, #F0F9FF 0%, #E8F8F5 50%, #F2F9E8 100%), url("./Modern Healthcare Medicine Concept.png") center center / cover no-repeat;
+    }
+
+    .hero-content { max-width: 580px; }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 17px;
+      padding: 8px 14px;
+      border: 1px solid #CDEFE8;
+      border-radius: 999px;
+      color: #007B6D;
+      background: #E8F8F4;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .hero-eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--brand-green);
+    }
+
+    .hero-content h1 {
+      margin: 0 0 20px;
+      color: #173A52;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(42px, 5vw, 58px);
+      font-weight: 850;
+      line-height: 1.05;
+      letter-spacing: -2px;
+    }
+
+    .hero-content p {
+      margin: 0;
+      padding-left: 20px;
+      border-left: 5px solid var(--brand-teal);
+      color: #647786;
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+      margin-top: 28px;
+    }
+
+    .hero-btn {
+      min-height: 48px;
+      padding: 0 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 30px;
+      font-size: 13.5px;
+      text-decoration: none;
+      font-weight: 750;
+      transition: all .2s ease;
+    }
+
+    .hero-btn-primary {
+      color: white;
+      background: #0076D2;
+      box-shadow: 0 7px 18px rgba(0,118,210,.18);
+    }
+
+    .hero-btn-secondary {
+      color: #005FAF;
+      background: white;
+      border: 1px solid #B4E8DE;
+    }
+
+    .hero-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,118,210,.22);
+    }
+
+    .hero-badge-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid #DCE9EF;
+      border-radius: 20px;
+      padding: 26px;
+      box-shadow: 0 10px 30px rgba(0, 118, 210, 0.08);
+    }
+
+    .hero-badge-panel h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: #173A52;
+    }
+
+    .hero-badge-panel p {
+      font-size: 13px;
+      color: #647786;
+      margin: 0 0 14px;
+      line-height: 1.6;
+    }
+
+    .system-pill-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .system-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #F8FBFE;
+      border: 1px solid #E2EFF5;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* COMMON CONTENT SECTIONS */
+    .page-section {
+      padding: 70px 24px;
+      scroll-margin-top: 155px;
+    }
+
+    .section-inner {
+      width: min(1100px, 100%);
+      margin: auto;
+    }
+
+    .section-heading {
+      max-width: 720px;
+      margin: 0 auto 34px;
+      text-align: center;
+    }
+
+    .section-kicker {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 6px 14px;
+      border: 1px solid #CDEFE8;
+      border-radius: 999px;
+      color: #007B6D;
+      background: #E8F8F4;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 12px;
+      color: #173A52;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(26px, 3vw, 36px);
+      letter-spacing: -1px;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: #708797;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .content-card {
+      padding: 28px;
+      border: 1px solid #DCE9EF;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(16,75,115,.06);
+    }
+
+    .content-card + .content-card { margin-top: 22px; }
+
+    .content-card h2, .content-card h3 {
+      margin-top: 0;
+      color: #173A52;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .content-card h2 { margin-bottom: 15px; font-size: 24px; }
+    .content-card h3 { margin-bottom: 12px; font-size: 19px; }
+
+    .content-card p {
+      color: #526A7D;
+      font-size: 14.5px;
+      line-height: 1.7;
+    }
+
+    .notice {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border: 1px solid #f0dfb7;
+      border-left: 4px solid #f59e0b;
+      border-radius: 12px;
+      color: #725b2b;
+      background: #fff7e5;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .notice-info {
+      background-color: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 15px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      margin-top: 12px;
+      color: #1e3a8a;
+    }
+
+    /* HOW IT WORKS */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .step-card {
+      padding: 24px;
+      border: 1px solid #DCE9EF;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(16,75,115,.05);
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      margin-bottom: 16px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: #0076D2;
+      background: #E6F7F3;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .step-card h3 { margin: 0 0 9px; font-size: 17px; color: #173A52; }
+    .step-card p { margin: 0; color: #708797; font-size: 13.5px; line-height: 1.7; }
+
+    /* FORMS */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      min-width: 0;
+      margin-bottom: 15px;
+    }
+
+    .field label {
+      color: #275A78;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .field input, .field select, .field textarea {
+      width: 100%;
+      min-width: 0;
+      min-height: 46px;
+      padding: 11px 13px;
+      border: 1px solid #D2E3EC;
+      border-radius: 10px;
+      color: #244B66;
+      background: #F9FCFE;
+      font-size: 14px;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: #01CBA8;
+      box-shadow: 0 0 0 3px rgba(0,118,210,.12);
+    }
+
+    .field-help {
+      margin: 0;
+      color: #8396A4;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .action-button {
+      min-height: 44px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 10px;
+      color: white;
+      background: #0076D2;
+      font-size: 14px;
+      font-weight: 750;
+      transition: background .18s ease, transform .18s ease;
+    }
+
+    .action-button:hover {
+      background: #064D8C;
+      transform: translateY(-1px);
+    }
+
+    .action-button:disabled { opacity: .6; cursor: wait; }
+
+    .action-button-secondary {
+      background: #008F7A;
+    }
+    .action-button-secondary:hover {
+      background: #007060;
+    }
+
+    .action-button-ai {
+      background: #6366F1;
+    }
+    .action-button-ai:hover {
+      background: #4F46E5;
+    }
+
+    .action-button-outline {
+      background: #FFFFFF;
+      color: #0076D2;
+      border: 1px solid #CBE5EC;
+    }
+    .action-button-outline:hover {
+      background: #F0F9FF;
+    }
+
+    .status-message {
+      min-height: 20px;
+      margin: 12px 0 0;
+      color: #526A7D;
+      font-size: 13.5px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .status-message.error { color: #b33f3f; font-weight: 600; }
+    .status-message.success { color: #477900; font-weight: 600; }
+
+    .image-preview {
+      display: block;
+      max-width: 260px;
+      max-height: 220px;
+      margin-top: 12px;
+      border: 1px solid #DCE9EF;
+      border-radius: 12px;
+      object-fit: contain;
+    }
+
+    .result-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .result-item {
+      padding: 16px;
+      border: 1px solid #DBE8EF;
+      border-radius: 12px;
+      background: #F6FAFD;
+    }
+
+    .result-item h4 { margin: 0 0 9px; color: #005FAF; font-size: 15px; }
+    .result-item p { margin: 5px 0; color: #526A7D; font-size: 13.5px; line-height: 1.6; }
+
+    .divider {
+      height: 1px;
+      margin: 25px 0;
+      border: 0;
+      background: #DCE9EF;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-allopathy {
+      background: #EBF5FF;
+      color: #0076D2;
+      border: 1px solid #CBE5EC;
+    }
+
+    .badge-ayurveda {
+      background: #F1F8E8;
+      color: #477900;
+      border: 1px solid #D6ECC0;
+    }
+
+    .badge-homeopathy {
+      background: #FFF7E5;
+      color: #B45309;
+      border: 1px solid #FDE68A;
+    }
+
+    .badge-code {
+      background: #EFF6F9;
+      color: #275A78;
+      font-family: monospace;
+      font-weight: bold;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    /* 3-SYSTEM KNOWLEDGE COMPARISON GRID */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .system-column {
+      background: #FFFFFF;
+      border: 1px solid #DCE9EF;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 4px 14px rgba(16,75,115,.04);
+    }
+
+    .system-column h3 {
+      margin-top: 0;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #E2EFF5;
+      padding-bottom: 10px;
+    }
+
+    .concept-card {
+      background: #F9FCFE;
+      border: 1px solid #E2EFF5;
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 10px;
+    }
+
+    .concept-card h4 {
+      margin: 0 0 4px 0;
+      color: #0076D2;
+      font-size: 15px;
+    }
+
+    .concept-def {
+      font-size: 13px;
+      color: #526A7D;
+      line-height: 1.5;
+      margin: 6px 0;
+    }
+
+    .empty-system-notice {
+      color: #8396A4;
+      font-style: italic;
+      font-size: 13px;
+      padding: 18px 12px;
+      text-align: center;
+      background: #F9FCFE;
+      border: 1px dashed #DCE9EF;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    /* PRESCRIBED MEDICINES IN COMPARISON */
+    .column-prescribed-box {
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #DCE9EF;
+      box-shadow: 0 2px 8px rgba(16, 75, 115, 0.04);
+    }
+    .column-prescribed-box.allopathy {
+      background: #F0F7FF;
+      border-color: #BAE6FD;
+    }
+    .column-prescribed-box.ayurveda {
+      background: #F2FDF0;
+      border-color: #BBF7D0;
+    }
+    .column-prescribed-box.homeopathy {
+      background: #FFFBEB;
+      border-color: #FDE68A;
+    }
+
+    .prescribed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .prescribed-title {
+      font-size: 13.5px;
+      font-weight: 750;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .column-prescribed-box.allopathy .prescribed-title { color: #0284C7; }
+    .column-prescribed-box.ayurveda .prescribed-title { color: #16A34A; }
+    .column-prescribed-box.homeopathy .prescribed-title { color: #D97706; }
+
+    .prescribed-count {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #475569;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .prescribed-item {
+      padding: 9px 11px;
+      background: #FFFFFF;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      margin-top: 7px;
+    }
+    .prescribed-item:first-child { margin-top: 0; }
+
+    .prescribed-med-name {
+      font-size: 13px;
+      font-weight: 750;
+      color: #1E293B;
+    }
+    .prescribed-med-action {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #0F766E;
+      margin: 2px 0;
+    }
+    .prescribed-med-details {
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.45;
+      margin-top: 2px;
+    }
+    .prescribed-med-dosage {
+      font-size: 11.5px;
+      color: #334155;
+      background: #F8FAFC;
+      border-left: 3px solid #0076D2;
+      padding: 4px 7px;
+      margin-top: 5px;
+      border-radius: 4px;
+      line-height: 1.4;
+    }
+    .column-prescribed-box.ayurveda .prescribed-med-dosage {
+      border-left-color: #16A34A;
+    }
+    .column-prescribed-box.homeopathy .prescribed-med-dosage {
+      border-left-color: #D97706;
+    }
+
+    .card-prescribed-medicines {
+      margin-top: 9px;
+      padding: 8px 10px;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: 8px;
+    }
+    .card-prescribed-title {
+      font-size: 11.5px;
+      font-weight: 750;
+      color: #166534;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .card-prescribed-list {
+      margin: 0;
+      padding-left: 16px;
+      font-size: 12px;
+      color: #14532D;
+      line-height: 1.45;
+    }
+    .card-prescribed-list li {
+      margin-bottom: 3px;
+    }
+    .card-prescribed-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .ai-explanation-box {
+      margin-top: 18px;
+      padding: 20px;
+      border: 1px solid #D5E1FD;
+      border-left: 5px solid #4F46E5;
+      border-radius: 14px;
+      background: #F8FAFF;
+    }
+
+    .ai-explanation-text {
+      white-space: pre-wrap;
+      line-height: 1.65;
+      color: #1E1B4B;
+      font-size: 14px;
+    }
+
+    .sources-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 13px;
+    }
+
+    .sources-table th, .sources-table td {
+      border: 1px solid #DCE9EF;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .sources-table th {
+      background-color: #F1F7FB;
+      color: #173A52;
+    }
+
+    /* PREVIOUS RECORDS TABLE & COMMENTS STYLES */
+    .records-table-container {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 15px;
+      border: 1px solid #DCE9EF;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(16,75,115,.04);
+    }
+
+    .records-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 780px;
+    }
+
+    .records-table th, .records-table td {
+      border: 1px solid #E2EFF5;
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .records-table th {
+      background-color: #F1F7FB;
+      color: #173A52;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .records-table th.col-comments {
+      background-color: #E8F8F4;
+      color: #007B6D;
+      min-width: 280px;
+    }
+
+    .records-table tr:hover {
+      background-color: #FAFDFE;
+    }
+
+    .comment-box {
+      background: #F4FBF9;
+      border: 1px solid #CDEFE8;
+      border-left: 3px solid #01CBA8;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      color: #064D8C;
+      line-height: 1.5;
+    }
+
+    .comment-box strong {
+      color: #007B6D;
+    }
+
+    .comment-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #CBE5EC;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 12px;
+      font-family: inherit;
+      resize: vertical;
+      background: #FAFDFF;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .comment-textarea:focus {
+      border-color: #0076D2;
+      outline: none;
+      background: #fff;
+      box-shadow: 0 0 0 2px rgba(0, 118, 210, 0.15);
+    }
+
+    .btn-save-comment {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 6px;
+      border: 1px solid #0076D2;
+      background: #0076D2;
+      color: #fff;
+      cursor: pointer;
+      transition: background .15s ease, transform .15s ease;
+    }
+
+    .btn-save-comment:hover {
+      background: #005FAF;
+      transform: translateY(-1px);
+    }
+
+    .view-toggle-btn {
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid #CBE5EC;
+      background: #fff;
+      color: #173A52;
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+
+    .view-toggle-btn.active {
+      background: #0076D2;
+      color: #fff;
+      border-color: #0076D2;
+    }
+
+    /* GOOGLE OAUTH LOGIN & USER PROFILE STYLES */
+    .google-auth-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 16px;
+      background: #ffffff;
+      color: #3c4043;
+      border: 1px solid #dadce0;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(60,64,67,0.08);
+      transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+
+    .google-auth-btn:hover {
+      background: #f8fafd;
+      box-shadow: 0 2px 6px rgba(60,64,67,0.15);
+      transform: translateY(-1px);
+    }
+
+    .google-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .user-profile-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 14px 5px 6px;
+      background: #EFF7FB;
+      border: 1px solid #CBE5EC;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0, 118, 210, 0.08);
+    }
+
+    .user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #0076D2;
+    }
+
+    .user-avatar-initials {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-blue), var(--brand-teal));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 750;
+      font-size: 14px;
+      text-transform: uppercase;
+      box-shadow: 0 2px 5px rgba(0,118,210,0.2);
+    }
+
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .user-label {
+      font-size: 10px;
+      font-weight: 750;
+      color: #7E93A1;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .user-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #064D8C;
+    }
+
+    .btn-logout {
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      border-radius: 999px;
+      border: 1px solid #DCE9EF;
+      background: #fff;
+      color: #e11d48;
+      cursor: pointer;
+      margin-left: 4px;
+      transition: all .15s ease;
+    }
+
+    .btn-logout:hover {
+      background: #ffe4e6;
+      border-color: #fca5a5;
+    }
+
+    /* Google Auth Modal */
+    .auth-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(16, 37, 56, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .auth-modal-card {
+      background: #fff;
+      border-radius: 20px;
+      width: min(440px, calc(100vw - 32px));
+      padding: 26px;
+      box-shadow: 0 16px 40px rgba(0, 118, 210, 0.16);
+      border: 1px solid #DCE9EF;
+    }
 
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #65738a;
-            font-size: 13px;
-        }
-    </style>
+    /* AYURVEDA */
+    .ayurveda-panel {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .ayurveda-highlight {
+      padding: 24px;
+      border: 1px solid #E7F4D9;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #F1F8E8, #E9F5DC);
+    }
+
+    .ayurveda-highlight h3 { margin: 0 0 10px; color: #477900; }
+    .ayurveda-highlight p { margin: 0; color: #5C7550; line-height: 1.7; }
+
+    .ayurveda-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .ayurveda-tag {
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: #477900;
+      background: #E8F5D8;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* ABOUT SECTION */
+    .about-copy {
+      width: 100%;
+      max-width: 900px;
+      min-height: 380px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #about {
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+
+    /* OFFICIAL SOURCES INTEGRATED SECTION (BOTTOM) */
+    .sources-integrated-section {
+      font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+      background: #ffffff;
+      border: 1px solid #DCE9EF;
+      border-left: 4px solid var(--brand-blue);
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin: 25px auto 40px;
+      width: min(1100px, 100%);
+      box-shadow: 0 8px 24px rgba(16,75,115,.04);
+    }
+
+    .sources-integrated-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 750;
+      color: var(--brand-blue);
+      margin: 0 0 12px 0;
+      letter-spacing: 0.1px;
+    }
+
+    .sources-integrated-list {
+      font-family: 'Inter', system-ui, sans-serif;
+      margin: 0;
+      padding-left: 20px;
+      color: #526A7D;
+      font-size: 13.5px;
+      line-height: 1.75;
+    }
+
+    .sources-integrated-list li {
+      margin-bottom: 6px;
+    }
+
+    .sources-integrated-list strong {
+      color: #173A52;
+      font-weight: 650;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      width: 100%;
+      min-height: 65px;
+      padding: 20px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      background: linear-gradient(90deg, #0076D2, #01CBA8, #6DB501);
+      border-top: 3px solid #6DB501;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .footer-left,
+    .footer-right {
+      color: #ffffff;
+    }
+
+    .footer-left { text-align: left; }
+    .footer-right { text-align: right; }
+
+    /* RESPONSIVE */
+    @media (max-width: 850px) {
+      .home-hero {
+        grid-template-columns: 1fr;
+        padding: 48px 24px;
+        gap: 28px;
+      }
+      .hero-content { max-width: 720px; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .ayurveda-panel { grid-template-columns: 1fr; }
+      .navigation-container {
+        justify-content: flex-start;
+        overflow-x: auto;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .top-header-inner {
+        width: calc(100% - 24px);
+        min-height: 76px;
+        gap: 8px;
+      }
+      .brand { gap: 10px; }
+      .brand-mark {
+        width: 55px;
+        height: 55px;
+        flex-basis: 55px;
+        border-radius: 10px;
+      }
+      .brand-name { font-size: 18px; }
+      .brand-caption { font-size: 8px; letter-spacing: 0.8px; }
+      .navigation-container { min-height: 44px; }
+      .nav-link { padding: 0 10px; font-size: 12px; }
+      .hero-content h1 { font-size: 38px; }
+      .hero-content p { font-size: 15px; }
+      .page-section { padding: 46px 16px; }
+      .content-card { padding: 20px; }
+      .form-grid { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>Doctor vs Vaidya</h1>
-        <p>Medical Record Comparison Prototype</p>
-    </header>
+  <!-- HEADER: LOGO & WEBSITE NAME -->
+  <header class="site-header">
+    <div class="top-header-inner">
+      <a href="#home" class="brand" aria-label="Go to homepage">
+        <div class="brand-mark">
+          <img src="./logo.png" alt="MedVeda logo">
+        </div>
+        <div class="brand-copy">
+          <div class="brand-name">MedVeda</div>
+          <span class="brand-caption">PRESCRIPTION ANALYSIS & MEDICINE INSIGHTS</span>
+        </div>
+      </a>
 
-    <main>
-        <section class="card">
-            <h2>Welcome</h2>
+      <!-- GOOGLE OAUTH LOGIN & USER WIDGET -->
+      <div class="nav-actions" id="authNavContainer">
+        <!-- Logged Out State: Google Sign-in -->
+        <div id="loggedOutView" style="display:flex; align-items:center; gap:8px;">
+          <div id="googleBtnSlot"></div>
+          <button type="button" class="google-auth-btn" id="manualGoogleLoginBtn" title="Sign in with your Google account">
+            <svg class="google-icon" viewBox="0 0 24 24" width="18" height="18">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Sign in with Google</span>
+          </button>
+        </div>
+
+        <!-- Logged In State: User Avatar & Name (acts as Patient Reference / Username) -->
+        <div id="loggedInView" class="user-profile-badge" style="display:none;">
+          <img id="userAvatarImg" class="user-avatar" src="" alt="Avatar" style="display:none;">
+          <div id="userAvatarInitials" class="user-avatar-initials">U</div>
+          <div class="user-details">
+            <span class="user-label">Username</span>
+            <span id="userDisplayName" class="user-name">User</span>
+          </div>
+          <button type="button" id="googleLogoutBtn" class="btn-logout" title="Sign out of MedVeda">Sign Out</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN NAVIGATION -->
+    <nav class="main-navigation" aria-label="Main navigation">
+      <div class="navigation-container">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#how-it-works" class="nav-link">How it works</a>
+        <a href="#analyser" class="nav-link">Analyser</a>
+        <a href="#medicines" class="nav-link">Medicines & Knowledge Base</a>
+        <a href="#ayurveda" class="nav-link">Ayurveda</a>
+        <a href="#about" class="nav-link">About</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- GOOGLE AUTH MODAL -->
+  <div id="googleAuthModal" class="auth-modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="auth-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <svg class="google-icon" viewBox="0 0 24 24" width="22" height="22">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <h3 id="modalTitle" style="margin:0; font-size:18px; color:#173A52;">Sign in with Google</h3>
+        </div>
+        <button type="button" id="closeAuthModalBtn" style="background:none; border:none; font-size:20px; color:#64748b; cursor:pointer;">✕</button>
+      </div>
+
+      <p style="font-size:13.5px; color:#526A7D; margin:0 0 16px; line-height:1.5;">
+        Sign in with your Google account. Your name will be used as your <strong>Username</strong> to link and manage all your medical records.
+      </p>
+
+      <form id="googleAuthForm">
+        <div class="field" style="margin-bottom:12px;">
+          <label for="googleUserNameInput" style="font-size:13px; font-weight:700;">Your Google Name / Username *</label>
+          <input type="text" id="googleUserNameInput" placeholder="e.g. Sujith" required style="padding:10px; font-size:14px;">
+          <div id="usernameAvailabilityNotice" style="font-size:12px; margin-top:5px; font-weight:600; display:none;"></div>
+        </div>
+
+        <div class="field" style="margin-bottom:12px;">
+          <label for="googleEmailInput" style="font-size:13px; font-weight:700;">Gmail Address *</label>
+          <input type="email" id="googleEmailInput" placeholder="e.g. user@gmail.com" required style="padding:10px; font-size:14px;">
+        </div>
+
+        <div class="field" style="margin-bottom:16px;">
+          <label for="googlePasswordInput" style="font-size:13px; font-weight:700;">Password *</label>
+          <input type="password" id="googlePasswordInput" placeholder="Enter your password (min 4 characters)" required minlength="4" style="padding:10px; font-size:14px;">
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" id="cancelAuthModalBtn" class="action-button action-button-outline" style="min-height:38px; padding:0 16px; font-size:13px;">Cancel</button>
+          <button type="submit" class="action-button" style="min-height:38px; padding:0 18px; font-size:13px; background:#0076D2;">Sign In / Sign Up</button>
+        </div>
+        <p id="modalAuthStatus" class="status-message" style="margin-top:10px; font-size:12px;"></p>
+      </form>
+    </div>
+  </div>
+
+  <main>
+    <!-- 1. HOME HERO -->
+    <section class="home-hero" id="home">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Medical Informatics Platform</div>
+        <h1>Welcome</h1>
+        <p>
+          Compare documented medical terms and medicine names
+          from Allopathy, Ayurveda, and Homeopathy records using official
+          terminology standards and AI-assisted cross-system explanations.
+        </p>
+        <div class="hero-buttons">
+          <a href="#analyser" class="hero-btn hero-btn-primary">
+            Analyse Prescription
+          </a>
+          <a href="#medicines" class="hero-btn hero-btn-secondary">
+            Explore Knowledge Base
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-badge-panel">
+        <h3>Integrated Terminology Standards</h3>
+        <p>Directly grounded in official government medical terminology standards:</p>
+        <div class="system-pill-row">
+          <div class="system-pill">
+            <span>Allopathy</span>
+            <span class="badge badge-allopathy">SNOMED CT India</span>
+          </div>
+          <div class="system-pill">
+            <span>Ayurveda</span>
+            <span class="badge badge-ayurveda">NAMASTE SAT</span>
+          </div>
+          <div class="system-pill">
+            <span>Homeopathy</span>
+            <span class="badge badge-homeopathy">ICD-10 & HPI</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. HOW IT WORKS -->
+    <section class="page-section" id="how-it-works">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">How it works</span>
+          <h2>Explore and compare medical records</h2>
+          <p>
+            Use the platform to enter record details, search documented terminology,
+            and compare saved records. The tool does not determine clinical equivalence.
+          </p>
+        </div>
+        <div class="steps-grid">
+          <article class="step-card">
+            <div class="step-number">01</div>
+            <h3>Add a medical record</h3>
             <p>
-                Compare documented medical terms and medicine names
-                from Allopathy, Ayurveda, and Homeopathy records.
+              Enter a username, select the medical system and record type,
+              and upload prescription photos for automatic OCR text extraction.
             </p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">02</div>
+            <h3>Search documented terms</h3>
+            <p>
+              Compare concepts across Allopathy, Ayurveda, and Homeopathy using over
+              27,000+ official terminology concepts.
+            </p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">03</div>
+            <h3>View previous records</h3>
+            <p>
+              Retrieve and review past medical records organized by username.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ANALYSER: ADD RECORDS & USER RECORDS -->
+    <section class="page-section" id="analyser" style="background:#EFF7FB;">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Analyser</span>
+          <h2>Medical record workspace</h2>
+          <p>
+            Add records and retrieve previous saved prescriptions by username.
+          </p>
+        </div>
+
+        <!-- ADD MEDICAL RECORD -->
+        <section class="content-card">
+          <h2>Add Medical Record</h2>
+          <p>Enter details from a prescription or extract text from an uploaded photo. Your Google username automatically links to your records.</p>
+          <form id="recordForm">
+            <div class="field">
+              <label for="patientReference">Username</label>
+              <input
+                type="text"
+                id="patientReference"
+                placeholder="e.g. Sujith or DEMO001"
+                required>
+              <p class="field-help" id="userAutoFillNotice" style="font-size:12px; color:#007B6D; margin-top:4px; display:none;">
+                ✓ Using your signed-in Google username.
+              </p>
+            </div>
+
+            <div class="field">
+              <label for="medicalSystem">Medical System</label>
+              <select id="medicalSystem" required>
+                <option value="allopathy">Allopathy</option>
+                <option value="ayurveda">Ayurveda</option>
+                <option value="homeopathy">Homeopathy</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="recordType">Record Type</label>
+              <select id="recordType" required>
+                <option value="prescription">Prescription</option>
+                <option value="ehr">Electronic Health Record (EHR)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="prescriptionImage">Upload Prescription Photo (Extract Medicine &amp; Treatment Details)</label>
+              <input
+                type="file"
+                id="prescriptionImage"
+                accept="image/png,image/jpeg">
+              <p class="field-help" id="ocrHelpText"></p>
+              <img id="prescriptionPreview" class="image-preview" alt="Selected prescription preview" hidden>
+            </div>
+
+            <div class="field">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <label for="extractedText" style="margin-bottom:0;">Clinical Prescription Details (Extracted via OCR)</label>
+                <button type="button" id="clearExtractedTextButton" class="action-button action-button-outline" style="min-height:28px; padding:2px 10px; font-size:12px; border-radius:6px;">
+                  Clear Text ✕
+                </button>
+              </div>
+              <textarea
+                id="extractedText"
+                rows="4"
+                placeholder="Extracted clinical details (prescribed medicines, dosages, conditions, clinical advice &amp; diet) will appear here automatically"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="conditionTerms">Condition Terms</label>
+              <textarea
+                id="conditionTerms"
+                rows="3"
+                placeholder="Enter one condition term per line"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="medicineNames">Medicine Names</label>
+              <textarea
+                id="medicineNames"
+                rows="3"
+                placeholder="Enter one medicine name per line"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="notes">Notes</label>
+              <textarea
+                id="notes"
+                rows="3"
+                placeholder="Optional clinical notes"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="recordComments">Comments &amp; Patient Opinion (Optional)</label>
+              <textarea
+                id="recordComments"
+                rows="2"
+                placeholder="Share patient's opinion or experience regarding this prescription (helpful for doctor review)"></textarea>
+              <p class="field-help" style="margin-top:4px; font-size:12px; color:#647786;">
+                The user can share opinions, side-effects, or treatment feedback to assist the doctor during future consultations.
+              </p>
+            </div>
+
+            <div class="form-actions">
+              <button class="action-button" type="submit" id="saveRecordButton">
+                Save Medical Record
+              </button>
+              <button class="action-button action-button-outline" type="button" id="clearFormButton">
+                Clear All
+              </button>
+            </div>
+
+            <p id="formMessage" class="status-message" role="status" aria-live="polite"></p>
+          </form>
         </section>
 
-<section class="card">
-    <h2>About This Project</h2>
+        <!-- PATIENT RECORDS AND COMPARE -->
+        <section class="content-card">
+          <h2>Medical Records by Username</h2>
+          <div class="field">
+            <label for="historyPatientId">Username</label>
+            <input
+              type="text"
+              id="historyPatientId"
+              placeholder="Enter username, e.g. Sujith or DEMO001">
+            <p class="field-help" style="font-size:12px; color:#64748b; margin-top:4px;">
+              View and manage past prescriptions associated with this username.
+            </p>
+          </div>
 
-    <p>
-        This platform helps users organize and compare
-        information recorded in different medical systems.
-    </p>
+          <div class="form-actions">
+            <button class="action-button" type="button" id="loadRecordsButton">
+              View Previous Records
+            </button>
+          </div>
 
-    <p>
-        <strong>Important Disclaimer:</strong>
-        This prototype is for medical terminology comparison
-        and educational purposes only. The displayed mappings
-        may be incomplete or unverified. They do not establish
-        clinical equivalence and must not be used to diagnose
-        conditions, select treatments, or replace advice from
-        a qualified healthcare professional.
-    </p>
+          <div id="recordsContainer" class="result-list" style="display: none;" aria-live="polite"></div>
 
-    <div class="notice">
-        <strong>Important:</strong> Text similarities do not
-        establish clinical equivalence. This prototype does
-        not diagnose diseases or recommend treatments.
+
+        </section>
+      </div>
+    </section>
+
+    <!-- 4. MEDICINES & OFFICIAL KNOWLEDGE BASE -->
+    <section class="page-section" id="medicines">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Knowledge Base</span>
+          <h2>Official Medical Terminology & Cross-System Search</h2>
+          <p>
+            Explore concepts across Allopathy (SNOMED CT), Ayurveda (NAMASTE SAT), and Homeopathy (ICD-10 / PCIM&H)
+            drawn from 27,000+ official terminology records.
+          </p>
+        </div>
+
+        <!-- 3-SYSTEM KNOWLEDGE EXPLORER -->
+        <section class="content-card">
+          <h2>Compare Medical Concepts Across All 3 Systems</h2>
+          <p>
+            Enter any condition, symptom, medicine, or diagnostic code to search official records
+            simultaneously across Allopathy, Ayurveda, and Homeopathy.
+          </p>
+
+          <div class="field">
+            <label for="knowledgeTermInput">Medical Term</label>
+            <input
+              type="text"
+              id="knowledgeTermInput"
+              placeholder="e.g., fever, diabetes, 387207001, SAT-A.1, E10, Guduchi">
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="compareKnowledgeButton" class="action-button action-button-secondary">
+              ⚖️ Compare Across All 3 Systems
+            </button>
+            <button type="button" id="searchKnowledgeButton" class="action-button">
+              🔍 Search Knowledge Base
+            </button>
+            <button type="button" id="clearKnowledgeButton" class="action-button action-button-outline">
+              Clear
+            </button>
+          </div>
+
+          <div id="knowledgeStatusMessage" class="status-message"></div>
+
+          <!-- COMPARATIVE RESULTS -->
+          <div id="knowledgeResultsContainer"></div>
+
+          <!-- COLLAPSIBLE SOURCES & LICENSING VIEWER -->
+          <div style="margin-top: 25px; border-top: 1px solid #DCE9EF; padding-top: 15px;">
+            <button type="button" id="toggleSourcesButton" class="action-button action-button-outline" style="font-size: 13px; min-height: 38px;">
+              📜 View Official Knowledge Sources & Licensing Information
+            </button>
+            <div id="sourcesContainer" style="display: none; margin-top: 15px;"></div>
+          </div>
+        </section>
+
+        <!-- TERMINOLOGY MAPPING SEARCH -->
+        <section class="content-card" style="margin-top: 22px;">
+          <h2>Quick Terminology Lookup</h2>
+          <p>
+            Look up demonstration mappings or bridged database entries from a specific source system.
+          </p>
+
+          <div class="field">
+            <label for="sourceSystem">Source Medical System</label>
+            <select id="sourceSystem">
+              <option value="allopathy">Allopathy</option>
+              <option value="ayurveda">Ayurveda</option>
+              <option value="homeopathy">Homeopathy</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="sourceTerm">Medical Term</label>
+            <input
+              type="text"
+              id="sourceTerm"
+              placeholder="Example: diabetes">
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="action-button" id="findEquivalentsButton">
+              Find Corresponding Terms
+            </button>
+            <button type="button" class="action-button action-button-outline" id="clearTerminologyButton">
+              Clear
+            </button>
+          </div>
+
+          <div id="equivalentResults" class="result-list" aria-live="polite"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- 5. AYURVEDA -->
+    <section class="page-section" id="ayurveda" style="background:#F2F9E8;">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Ayurveda</span>
+          <h2>Ayurvedic terminology and records</h2>
+          <p>
+            Browse and search Ayurveda terms entered in your project's terminology
+            database. A match in the database is not proof that two medicines or
+            treatments are clinically interchangeable.
+          </p>
+        </div>
+
+        <div class="content-card ayurveda-panel">
+          <div>
+            <h2>Explore Ayurveda records</h2>
+            <p>
+              Select Ayurveda as the source medical system when adding a record
+              or searching for a documented term. The search uses official Standardized
+              Ayurvedic Terminology (SAT) via the Ministry of Ayush NAMASTE portal.
+            </p>
+            <div class="ayurveda-tags">
+              <span class="ayurveda-tag">Ayurveda</span>
+              <span class="ayurveda-tag">NAMASTE SAT</span>
+              <span class="ayurveda-tag">Tridosha Pathology</span>
+              <span class="ayurveda-tag">Record comparison</span>
+            </div>
+            <div class="hero-buttons">
+              <button class="action-button" type="button" id="ayurvedaSearchButton" style="background:#477900;">
+                Search Ayurveda Terms
+              </button>
+            </div>
+          </div>
+
+          <div class="ayurveda-highlight">
+            <h3>Use verified information carefully</h3>
+            <p>
+              Ayurveda records use systemic and holistic terminology (Dosha, Dhatu, Agni)
+              that differs fundamentally from modern molecular diagnostic criteria.
+              Review the original record and consult a qualified healthcare professional.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. ABOUT -->
+    <section class="page-section" id="about">
+      <div class="section-inner">
+        <div class="content-card about-copy">
+          <div class="section-heading" style="margin-bottom:22px;">
+            <span class="section-kicker">About</span>
+            <h2>About MedVeda</h2>
+          </div>
+          <p>
+            MedVeda helps users organize, understand, and compare information
+            recorded across Allopathy, Ayurveda, and Homeopathy.
+          </p>
+          <p>
+            <strong>Important Medical Safety Disclaimer:</strong>
+            This prototype is designed exclusively for medical terminology comparison, educational,
+            and research purposes. Textual or conceptual similarities across different medical systems
+            <strong>do NOT establish clinical equivalence</strong>. This prototype does not diagnose diseases,
+            recommend treatments, or replace advice from qualified healthcare professionals.
+          </p>
+          <div class="notice">
+            <strong>Important:</strong>
+            Text similarities do not establish clinical equivalence. This
+            prototype does not diagnose diseases or recommend medical treatments.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OFFICIAL MEDICAL KNOWLEDGE SOURCES INTEGRATED -->
+    <section class="sources-integrated-section">
+      <h3 class="sources-integrated-title">Official Medical Knowledge Sources Integrated</h3>
+      <ul class="sources-integrated-list">
+        <li><strong>Allopathy:</strong> SNOMED CT India Release via NRCeS Bharat Health Terminology Service (BHTS FHIR R4).</li>
+        <li><strong>Ayurveda:</strong> Standardized Ayurvedic Terminology (SAT) via Ministry of Ayush NAMASTE Portal.</li>
+        <li><strong>Homeopathy:</strong> Disease Terminology (ICD-10) via NAMASTE and Pharmacopoeial Medicine Monographs via PCIM&H (HPI Volumes I–XI).</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-left">
+      Project
     </div>
-</section>
-
-<section class="card">
-    <h2>Add Medical Record</h2>
-
-
-    <p>Enter the details from a fictional or anonymized medical record.</p>
-
-    <form id="recordForm">
-
-        <label for="patientReference">Patient Reference</label>
-        <input type="text" id="patientReference"
-               placeholder="Example: DEMO004" required>
-
-        <label for="medicalSystem">Medical System</label>
-        <select id="medicalSystem" required>
-            <option value="allopathy">Allopathy</option>
-            <option value="ayurveda">Ayurveda</option>
-            <option value="homeopathy">Homeopathy</option>
-        </select>
-
-        <label for="recordType">Record Type</label>
-        <select id="recordType" required>
-            <option value="prescription">Prescription</option>
-            <option value="ehr">Electronic Health Record (EHR)</option>
-        </select>
-<div class="form-group">
-    <label for="prescriptionImage">
-        Upload Prescription / Medical Record Photo
-    </label>
-
-    <input
-        type="file"
-        id="prescriptionImage"
-        accept="image/png, image/jpeg"
-    >
-
-    <p>
-        Select a JPG or PNG image of your medical record.
-    </p>
-</div>
-
-
-        <label for="conditionTerms">Condition Terms</label>
-        <textarea id="conditionTerms"
-                  placeholder="Enter one term per line"
-                  rows="3"></textarea>
-
-        <label for="medicines">Medicine Names</label>
-        <textarea id="medicines"
-                  placeholder="Enter one medicine name per line"
-                  rows="3"></textarea>
-
-        <label for="notes">Notes</label>
-        <textarea id="notes"
-                  placeholder="Optional notes"
-                  rows="3"></textarea>
-
-        <button type="submit">Save Medical Record</button>
-
-        <p id="formMessage" role="status"></p>
-
-    </form>
-</section>
-
-<section class="card">
-    <h2>Find Equivalent Medical Terms</h2>
-
-    <p>
-        Enter a medical term from one system to search for
-        corresponding documented terms in the other systems.
-    </p>
-
-    <label for="sourceSystem">Source Medical System</label>
-    <select id="sourceSystem">
-        <option value="allopathy">Allopathy</option>
-        <option value="ayurveda">Ayurveda</option>
-        <option value="homeopathy">Homeopathy</option>
-    </select>
-
-    <label for="sourceTerm">Medical Term</label>
-    <input
-        type="text"
-        id="sourceTerm"
-        placeholder="Example: diabetes"
-    >
-
-    <button type="button" id="findEquivalentsButton">
-        Find Corresponding Terms
-    </button>
-
-    <div id="equivalentResults"></div>
-</section>
-
-
-
-       
-
-         
-<section class="card">
-    <h2>Patient Medical Records</h2>
-
-    <div class="form-group">
-        <label for="historyPatientId">Patient ID</label>
-        <input
-            type="text"
-            id="historyPatientId"
-            placeholder="Enter patient ID, e.g. P1001"
-        >
+    <div class="footer-right">
+      MedVeda © 2026
     </div>
+  </footer>
 
-    <button type="button" id="loadRecordsButton">
-        View Previous Records
-    </button>
+  <script>
+    const API_BASE = "http://127.0.0.1:8000";
+    const $ = (selector) => document.querySelector(selector);
 
-    <div id="recordsContainer">
-        <p>Enter a patient ID to view their records.</p>
-    </div>
-
-    <hr>
-
-    <h3>Compare Two Medical Records</h3>
-
-    <div class="form-group">
-        <label for="recordId1">First Record ID</label>
-        <input
-            type="number"
-            id="recordId1"
-            min="1"
-            placeholder="e.g. 1"
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="recordId2">Second Record ID</label>
-        <input
-            type="number"
-            id="recordId2"
-            min="1"
-            placeholder="e.g. 2"
-        >
-    </div>
-
-    <button type="button" id="compareRecordsButton">
-        Compare Records
-    </button>
-
-    <div id="comparisonContainer">
-        <p>Select two record IDs to compare.</p>
-    </div>
-</section>
-
-    </main>
-
-    <footer>
-        Academic Prototype | Doctor vs Vaidya
-    </footer>
-
-    <script>
-        const form = document.getElementById("recordForm");
-        const formMessage = document.getElementById("formMessage");
-
-        form.addEventListener("submit", async function (event) {
-            event.preventDefault();
-
-            formMessage.textContent = "Saving record...";
-
-            const record = {
-                patient_reference:
-                    document.getElementById("patientReference").value.trim(),
-
-                medical_system:
-                    document.getElementById("medicalSystem").value,
-
-                record_type:
-                    document.getElementById("recordType").value,
-
-                condition_terms:
-                    document.getElementById("conditionTerms").value
-                        .split("\n")
-                        .map(term => term.trim())
-                        .filter(term => term !== ""),
-
-                medicines:
-                    document.getElementById("medicines").value
-                        .split("\n")
-                        .map(medicine => medicine.trim())
-                        .filter(medicine => medicine !== ""),
-
-                notes:
-                    document.getElementById("notes").value.trim() || null
-            };
-
-            try {
-                const response = await fetch(
-                    "http://127.0.0.1:8000/api/records",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(record)
-                    }
-                );
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(
-                        result.detail
-                            ? JSON.stringify(result.detail)
-                            : "Could not save the record."
-                    );
-                }
-
-                formMessage.textContent =
-                    "Success! Record saved. Record ID: " + result.record_id;
-
-                form.reset();
-
-            } catch (error) {
-                formMessage.textContent =
-                    "Error: " + error.message +
-                    ". Check that the backend server is running.";
-            }
-        });
-
-        const loadRecordsButton =
-            document.getElementById("loadRecordsButton");
-
-        const recordsContainer =
-            document.getElementById("recordsContainer");
-
-        loadRecordsButton.addEventListener("click", async function () {
-            recordsContainer.textContent = "Loading records...";
-
-            try {
-                const response = await fetch(
-                    "http://127.0.0.1:8000/api/records"
-                );
-
-                if (!response.ok) {
-                    throw new Error("Could not load records.");
-                }
-
-                const result = await response.json();
-
-                recordsContainer.innerHTML = "";
-
-                if (result.records.length === 0) {
-                    recordsContainer.textContent =
-                        "No medical records have been saved yet.";
-                    return;
-                }
-
-                result.records.forEach(function (record) {
-                    const card = document.createElement("div");
-
-                    card.style.border = "1px solid #cbd5e1";
-                    card.style.borderRadius = "8px";
-                    card.style.padding = "15px";
-                    card.style.marginTop = "15px";
-
-                    const heading = document.createElement("h3");
-                    heading.textContent = "Record ID: " + record.id;
-                    card.appendChild(heading);
-
-                    const details = [
-                        ["Patient Reference", record.patient_reference],
-                        ["Medical System", record.medical_system],
-                        ["Record Type", record.record_type],
-                        ["Condition Terms", record.condition_terms.join(", ") || "None entered"],
-                        ["Medicine Names", record.medicines.join(", ") || "None entered"],
-                        ["Notes", record.notes || "None"]
-                    ];
-
-                    details.forEach(function (detail) {
-                        const paragraph = document.createElement("p");
-                        paragraph.textContent =
-                            detail[0] + ": " + detail[1];
-                        card.appendChild(paragraph);
-                    });
-
-                    recordsContainer.appendChild(card);
-                });
-
-            } catch (error) {
-                recordsContainer.textContent =
-                    "Error loading records: " + error.message;
-            }
-        });
-
-document.getElementById("findEquivalentsButton").addEventListener("click", async function () {
-    const system = document.getElementById("sourceSystem").value;
-    const term = document.getElementById("sourceTerm").value.trim();
-    const resultsDiv = document.getElementById("equivalentResults");
-
-    resultsDiv.textContent = "";
-
-    if (!term) {
-        resultsDiv.textContent = "Please enter a medical term.";
-        return;
+    function setMessage(element, message, type = "") {
+      element.textContent = message;
+      element.className = `status-message${type ? " " + type : ""}`;
     }
 
-    resultsDiv.textContent = "Searching...";
+    function splitLines(value) {
+      return (value || "")
+        .split(/\r?\n/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
 
-    try {
-        const url =
-            `http://127.0.0.1:8000/api/terminology/search?system=${encodeURIComponent(system)}&term=${encodeURIComponent(term)}`;
+    function escapeHtml(text) {
+      if (!text) return "";
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
 
-        const response = await fetch(url);
-        const data = await response.json();
+    async function apiRequest(path, options = {}) {
+      const response = await fetch(`${API_BASE}${path}`, {
+        ...options,
+        headers: {
+          ...(options.body && !(options.body instanceof FormData) ? { "Content-Type": "application/json" } : {}),
+          ...(options.headers || {})
+        }
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const detail = typeof data.detail === "string"
+          ? data.detail
+          : JSON.stringify(data.detail || data.message || `Request failed (${response.status})`);
+        throw new Error(detail);
+      }
+      return data;
+    }
 
-        resultsDiv.textContent = "";
+    // =====================================================================
+    // 0. GOOGLE OAUTH LOGIN & USER SESSION (USERNAME / PATIENT REFERENCE)
+    // =====================================================================
+    let currentUser = null;
 
-        if (!response.ok) {
-            resultsDiv.textContent = data.detail || "Search failed.";
-            return;
+    function updateAuthUI(user) {
+      currentUser = user;
+      const loggedOutView = $("#loggedOutView");
+      const loggedInView = $("#loggedInView");
+      const userDisplayName = $("#userDisplayName");
+      const userAvatarImg = $("#userAvatarImg");
+      const userAvatarInitials = $("#userAvatarInitials");
+      const patientRefInput = $("#patientReference");
+      const historyPatientInput = $("#historyPatientId");
+      const autoFillNotice = $("#userAutoFillNotice");
+
+      if (user && user.username) {
+        loggedOutView.style.display = "none";
+        loggedInView.style.display = "inline-flex";
+        userDisplayName.textContent = user.username;
+
+        if (user.picture) {
+          userAvatarImg.src = user.picture;
+          userAvatarImg.style.display = "block";
+          userAvatarInitials.style.display = "none";
+        } else {
+          userAvatarImg.style.display = "none";
+          userAvatarInitials.style.display = "flex";
+          userAvatarInitials.textContent = user.username.charAt(0).toUpperCase();
         }
 
-        const heading = document.createElement("h3");
-        heading.textContent = "Search Results";
-        resultsDiv.appendChild(heading);
+        // Auto-fill Username fields across workspace
+        if (patientRefInput) patientRefInput.value = user.username;
+        if (historyPatientInput) historyPatientInput.value = user.username;
+        if (autoFillNotice) autoFillNotice.style.display = "block";
+      } else {
+        loggedOutView.style.display = "flex";
+        loggedInView.style.display = "none";
+        if (autoFillNotice) autoFillNotice.style.display = "none";
+      }
+    }
+
+    async function handleGoogleCredentialResponse(response) {
+      try {
+        const authData = await apiRequest("/api/auth/google", {
+          method: "POST",
+          body: JSON.stringify({ credential: response.credential })
+        });
+        localStorage.setItem("medveda_user", JSON.stringify(authData));
+        updateAuthUI(authData);
+        setMessage($("#formMessage"), `Signed in with Google as "${authData.username}".`, "success");
+      } catch (err) {
+        console.error("Google Auth Error:", err);
+        alert(`Google Sign-In Error: ${err.message}`);
+      }
+    }
+
+    window.handleGoogleCredentialResponse = handleGoogleCredentialResponse;
+
+    async function initGoogleAuth() {
+      // 1. Restore local session if available
+      const savedUserJson = localStorage.getItem("medveda_user");
+      if (savedUserJson) {
+        try {
+          const savedUser = JSON.parse(savedUserJson);
+          updateAuthUI(savedUser);
+        } catch (e) {
+          localStorage.removeItem("medveda_user");
+        }
+      }
+
+      // 2. Query server for Google Client ID configuration
+      try {
+        const config = await apiRequest("/api/auth/config");
+        if (config.google_client_id && window.google && window.google.accounts) {
+          google.accounts.id.initialize({
+            client_id: config.google_client_id,
+            callback: handleGoogleCredentialResponse
+          });
+          const slot = document.getElementById("googleBtnSlot");
+          if (slot) {
+            google.accounts.id.renderButton(slot, {
+              theme: "outline",
+              size: "medium",
+              shape: "pill",
+              text: "signin_with"
+            });
+            $("#manualGoogleLoginBtn").style.display = "none";
+          }
+        }
+      } catch (err) {
+        console.log("Google OAuth config check note:", err.message);
+      }
+    }
+
+    // Modal controls for Google Login
+    const authModal = $("#googleAuthModal");
+    const manualLoginBtn = $("#manualGoogleLoginBtn");
+    const closeAuthModalBtn = $("#closeAuthModalBtn");
+    const cancelAuthModalBtn = $("#cancelAuthModalBtn");
+    const googleAuthForm = $("#googleAuthForm");
+
+    if (manualLoginBtn) {
+      manualLoginBtn.addEventListener("click", () => {
+        authModal.style.display = "flex";
+        $("#googleUserNameInput").focus();
+      });
+    }
+
+    const userNameInput = $("#googleUserNameInput");
+    const emailInput = $("#googleEmailInput");
+    const userNotice = $("#usernameAvailabilityNotice");
+    let checkTimeout = null;
+    let isUsernameTaken = false;
+
+    async function verifyUsernameAvailability() {
+      if (!userNameInput) return;
+      const uName = userNameInput.value.trim();
+      const mail = emailInput ? emailInput.value.trim() : "";
+
+      if (!uName || uName.length < 2) {
+        if (userNotice) userNotice.style.display = "none";
+        userNameInput.style.borderColor = "";
+        isUsernameTaken = false;
+        return;
+      }
+
+      try {
+        const query = new URLSearchParams({ username: uName });
+        if (mail) query.append("email", mail);
+        const res = await apiRequest(`/api/auth/check-username?${query.toString()}`);
+
+        if (res.available === false) {
+          isUsernameTaken = true;
+          if (userNotice) {
+            userNotice.style.display = "block";
+            userNotice.style.color = "#dc2626";
+            userNotice.textContent = "⚠️ username already exist try another";
+          }
+          userNameInput.style.borderColor = "#ef4444";
+        } else {
+          isUsernameTaken = false;
+          if (userNotice) {
+            userNotice.style.display = "block";
+            userNotice.style.color = "#059669";
+            userNotice.textContent = "✓ Username is available";
+          }
+          userNameInput.style.borderColor = "#10b981";
+        }
+      } catch (e) {
+        // Graceful fallback
+      }
+    }
+
+    if (userNameInput) {
+      userNameInput.addEventListener("input", () => {
+        clearTimeout(checkTimeout);
+        checkTimeout = setTimeout(verifyUsernameAvailability, 250);
+      });
+      userNameInput.addEventListener("blur", verifyUsernameAvailability);
+    }
+    if (emailInput) {
+      emailInput.addEventListener("blur", () => {
+        if (userNameInput && userNameInput.value.trim()) verifyUsernameAvailability();
+      });
+    }
+
+    const closeModal = () => {
+      authModal.style.display = "none";
+      $("#modalAuthStatus").textContent = "";
+      if (userNotice) {
+        userNotice.style.display = "none";
+        userNotice.textContent = "";
+      }
+      if (userNameInput) userNameInput.style.borderColor = "";
+      const pwdInput = $("#googlePasswordInput");
+      if (pwdInput) pwdInput.value = "";
+      isUsernameTaken = false;
+    };
+
+    if (closeAuthModalBtn) closeAuthModalBtn.addEventListener("click", closeModal);
+    if (cancelAuthModalBtn) cancelAuthModalBtn.addEventListener("click", closeModal);
+
+    if (googleAuthForm) {
+      googleAuthForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const username = userNameInput.value.trim();
+        const email = emailInput.value.trim();
+        const password = $("#googlePasswordInput").value;
+        const statusEl = $("#modalAuthStatus");
+
+        if (!username) {
+          setMessage(statusEl, "Please enter your username.", "error");
+          return;
+        }
+        if (isUsernameTaken) {
+          if (userNotice) {
+            userNotice.style.display = "block";
+            userNotice.style.color = "#dc2626";
+            userNotice.textContent = "⚠️ username already exist try another";
+          }
+          setMessage(statusEl, "username already exist try another", "error");
+          userNameInput.focus();
+          return;
+        }
+        if (!email) {
+          setMessage(statusEl, "Gmail address is mandatory.", "error");
+          return;
+        }
+        if (!password) {
+          setMessage(statusEl, "Password is mandatory.", "error");
+          return;
+        }
+
+        try {
+          const authData = await apiRequest("/api/auth/google", {
+            method: "POST",
+            body: JSON.stringify({ username, email, password })
+          });
+          localStorage.setItem("medveda_user", JSON.stringify(authData));
+          updateAuthUI(authData);
+          closeModal();
+          setMessage($("#formMessage"), `Signed in successfully as "${authData.username}".`, "success");
+        } catch (err) {
+          if (err.message && err.message.toLowerCase().includes("username already exist")) {
+            if (userNotice) {
+              userNotice.style.display = "block";
+              userNotice.style.color = "#dc2626";
+              userNotice.textContent = "⚠️ username already exist try another";
+            }
+            userNameInput.style.borderColor = "#ef4444";
+            userNameInput.focus();
+          }
+          setMessage(statusEl, err.message, "error");
+        }
+      });
+    }
+
+    // Sign out button
+    $("#googleLogoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("medveda_user");
+      updateAuthUI(null);
+      $("#patientReference").value = "";
+      $("#historyPatientId").value = "";
+      setMessage($("#formMessage"), "Signed out successfully.", "info");
+    });
+
+    // Run Auth Initialization
+    initGoogleAuth();
+
+    // =====================================================================
+    // 1. OCR AND IMAGE PREVIEW
+    // =====================================================================
+    let previewUrl = null;
+    $("#prescriptionImage").addEventListener("change", async (event) => {
+      const file = event.target.files && event.target.files[0];
+      const preview = $("#prescriptionPreview");
+      const ocrHelp = $("#ocrHelpText");
+
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+      }
+
+      if (!file) {
+        preview.hidden = true;
+        preview.removeAttribute("src");
+        return;
+      }
+
+      if (!["image/png", "image/jpeg"].includes(file.type)) {
+        event.target.value = "";
+        preview.hidden = true;
+        setMessage($("#formMessage"), "Please choose a JPG or PNG image.", "error");
+        return;
+      }
+
+      previewUrl = URL.createObjectURL(file);
+      preview.src = previewUrl;
+      preview.hidden = false;
+
+      // Automatically run Tesseract OCR on backend
+      ocrHelp.textContent = "Processing image with Tesseract OCR...";
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await fetch(`${API_BASE}/api/ocr/extract`, {
+          method: "POST",
+          body: formData
+        });
+        const ocrData = await response.json();
+
+        if (response.ok && ocrData.extracted_text) {
+          const extractedTextElem = $("#extractedText");
+          extractedTextElem.value = ocrData.extracted_text.trim();
+
+          // Auto-fill Medicine Names
+          if (Array.isArray(ocrData.medicines) && ocrData.medicines.length > 0) {
+            const medElem = $("#medicineNames");
+            medElem.value = ocrData.medicines.join("\n");
+          }
+
+          // Auto-fill Conditions / Symptoms related to the prescription
+          if (Array.isArray(ocrData.conditions) && ocrData.conditions.length > 0) {
+            const condElem = $("#conditionTerms");
+            if (!condElem.value.trim()) {
+              condElem.value = ocrData.conditions.join("\n");
+            }
+          }
+
+          // Auto-fill Clinical Advice, Instructions & Diet
+          if (Array.isArray(ocrData.advice) && ocrData.advice.length > 0) {
+            const notesElem = $("#notes");
+            if (!notesElem.value.trim()) {
+              notesElem.value = ocrData.advice.join("\n");
+            }
+          }
+
+          const medCount = Array.isArray(ocrData.medicines) ? ocrData.medicines.length : 0;
+          ocrHelp.textContent = `✅ Clinical details extracted (${medCount} medicine${medCount === 1 ? '' : 's'}, conditions, advice/diet). Hospital headers & addresses discarded.`;
+          ocrHelp.style.color = "#008F7A";
+        } else {
+          ocrHelp.textContent = "Photo loaded. (OCR note: " + (ocrData.detail || "No medical details detected in photo") + ")";
+        }
+      } catch (err) {
+        ocrHelp.textContent = "Photo preview loaded (OCR server offline or unavailable).";
+      }
+    });
+
+    // Clear OCR Extracted Text button
+    $("#clearExtractedTextButton").addEventListener("click", () => {
+      const field = $("#extractedText");
+      field.value = "";
+      $("#ocrHelpText").textContent = "Extracted text cleared.";
+      $("#ocrHelpText").style.color = "#8396A4";
+      field.focus();
+    });
+
+    // Clear entire form button
+    $("#clearFormButton").addEventListener("click", () => {
+      $("#recordForm").reset();
+      if (currentUser && currentUser.username) {
+        $("#patientReference").value = currentUser.username;
+      }
+      $("#extractedText").value = "";
+      $("#prescriptionPreview").hidden = true;
+      $("#prescriptionPreview").removeAttribute("src");
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+      }
+      $("#ocrHelpText").textContent = "";
+      $("#ocrHelpText").style.color = "#8396A4";
+      setMessage($("#formMessage"), "");
+    });
+
+    // =====================================================================
+    // 2. SAVE MEDICAL RECORD
+    // =====================================================================
+    $("#recordForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const button = $("#saveRecordButton");
+      button.disabled = true;
+      button.textContent = "Saving...";
+      setMessage($("#formMessage"), "Saving record...");
+
+      const extractedText = $("#extractedText").value.trim();
+      const userNotes = $("#notes").value.trim();
+      const combinedNotes = [
+        userNotes,
+        extractedText ? "OCR Extracted Text:\n" + extractedText : ""
+      ].filter(Boolean).join("\n\n") || null;
+
+      const record = {
+        patient_reference: $("#patientReference").value.trim(),
+        medical_system: $("#medicalSystem").value,
+        record_type: $("#recordType").value,
+        condition_terms: splitLines($("#conditionTerms").value),
+        medicines: splitLines($("#medicineNames").value),
+        notes: combinedNotes,
+        comments: $("#recordComments").value.trim() || null
+      };
+
+      try {
+        const result = await apiRequest("/api/records", {
+          method: "POST",
+          body: JSON.stringify(record)
+        });
+        setMessage(
+          $("#formMessage"),
+          `Record saved successfully! Record ID: #${result.record_id} for Username "${record.patient_reference}"`,
+          "success"
+        );
+        $("#recordForm").reset();
+        if (currentUser && currentUser.username) {
+          $("#patientReference").value = currentUser.username;
+        }
+        $("#recordComments").value = "";
+        $("#prescriptionPreview").hidden = true;
+        $("#prescriptionPreview").removeAttribute("src");
+        if (previewUrl) {
+          URL.revokeObjectURL(previewUrl);
+          previewUrl = null;
+        }
+      } catch (error) {
+        setMessage(
+          $("#formMessage"),
+          `Could not save record: ${error.message}`,
+          "error"
+        );
+      } finally {
+        button.disabled = false;
+        button.textContent = "Save Medical Record";
+      }
+    });
+
+    // =====================================================================
+    // 3. VIEW MEDICAL RECORDS (PATIENT FILTERED & TOGGLEABLE WITH COMMENTS)
+    // =====================================================================
+    const loadRecordsButton = $("#loadRecordsButton");
+    const recordsContainer = $("#recordsContainer");
+    const historyPatientInput = $("#historyPatientId");
+    let lastLoadedPatientRef = null;
+
+    historyPatientInput.addEventListener("input", function() {
+      if (recordsContainer.style.display !== "none" && lastLoadedPatientRef !== historyPatientInput.value.trim().toLowerCase()) {
+        recordsContainer.style.display = "none";
+        loadRecordsButton.textContent = "View Previous Records";
+        lastLoadedPatientRef = null;
+      }
+    });
+
+    // Helper to save patient comments for a record
+    window.saveRecordComment = async function(recordId, context) {
+      const input = document.getElementById(`${context}-comment-input-${recordId}`);
+      const status = document.getElementById(`${context}-comment-status-${recordId}`);
+      const display = document.getElementById(`${context}-comment-display-${recordId}`);
+
+      if (!input || !status) return;
+
+      const newComments = input.value.trim();
+      status.style.color = "#0076D2";
+      status.textContent = "Saving...";
+
+      try {
+        const res = await apiRequest(`/api/records/${recordId}/comments`, {
+          method: "PATCH",
+          body: JSON.stringify({ comments: newComments })
+        });
+
+        status.style.color = "#008F7A";
+        status.textContent = "✓ Saved for doctor!";
+        setTimeout(() => { if (status) status.textContent = ""; }, 4000);
+
+        // Update display and sync both table and card inputs
+        const otherContext = context === "table" ? "card" : "table";
+        const otherInput = document.getElementById(`${otherContext}-comment-input-${recordId}`);
+        const otherDisplay = document.getElementById(`${otherContext}-comment-display-${recordId}`);
+        const otherStatus = document.getElementById(`${otherContext}-comment-status-${recordId}`);
+
+        if (otherInput) otherInput.value = newComments;
+        if (otherStatus) {
+          otherStatus.style.color = "#008F7A";
+          otherStatus.textContent = "✓ Saved for doctor!";
+          setTimeout(() => { if (otherStatus) otherStatus.textContent = ""; }, 4000);
+        }
+
+        [display, otherDisplay].forEach(disp => {
+          if (disp) {
+            if (newComments) {
+              disp.style.display = "block";
+              disp.innerHTML = `💬 <strong>Patient Opinion:</strong> <span class="comment-text">${escapeHtml(newComments)}</span>`;
+            } else {
+              disp.style.display = "none";
+            }
+          }
+        });
+
+      } catch (err) {
+        status.style.color = "#e11d48";
+        status.textContent = `Error: ${err.message}`;
+      }
+    };
+
+    // Helper to delete an individual medical record
+    window.deleteRecord = async function(recordId) {
+      if (!confirm(`Are you sure you want to permanently delete Medical Record #${recordId}?`)) {
+        return;
+      }
+      try {
+        const res = await apiRequest(`/api/records/${recordId}`, { method: "DELETE" });
+        alert(res.message || `Record #${recordId} deleted successfully.`);
+        lastLoadedPatientRef = null;
+        loadRecordsButton.click();
+      } catch (err) {
+        alert(`Error deleting record: ${err.message}`);
+      }
+    };
+
+    // Helper to purge records that don't belong to the active user
+    window.cleanupOtherRecords = async function() {
+      const activeUser = currentUser?.username || historyPatientInput.value.trim();
+      if (!activeUser) {
+        alert("Please sign in or enter your Username first.");
+        return;
+      }
+      if (!confirm(`Delete all records in the database that do NOT belong to username "${activeUser}"?`)) {
+        return;
+      }
+      try {
+        const res = await apiRequest(`/api/records/cleanup-others?username=${encodeURIComponent(activeUser)}`, { method: "DELETE" });
+        alert(res.message);
+        lastLoadedPatientRef = null;
+        loadRecordsButton.click();
+      } catch (err) {
+        alert(`Error cleaning up records: ${err.message}`);
+      }
+    };
+
+    loadRecordsButton.addEventListener("click", async () => {
+      const patientId = historyPatientInput.value.trim();
+
+      // Require username
+      if (!patientId) {
+        recordsContainer.style.display = "block";
+        recordsContainer.innerHTML = `
+          <div style="background-color: #fff1f2; border: 1px solid #fecdd3; border-left: 4px solid #f43f5e; padding: 12px 15px; border-radius: 8px; color: #9f1239; font-size: 13.5px;">
+            ⚠️ <strong>Username Required:</strong> Please enter a Username above or sign in with Google to view records.
+          </div>
+        `;
+        loadRecordsButton.textContent = "View Previous Records";
+        lastLoadedPatientRef = null;
+        historyPatientInput.focus();
+        return;
+      }
+
+      // Toggle close if already viewing this user
+      if (recordsContainer.style.display !== "none" && lastLoadedPatientRef === patientId.toLowerCase()) {
+        recordsContainer.style.display = "none";
+        loadRecordsButton.textContent = "View Previous Records";
+        lastLoadedPatientRef = null;
+        return;
+      }
+
+      recordsContainer.style.display = "block";
+      recordsContainer.innerHTML = `<p style="color:#64748b; font-size:13.5px;">Loading records for username "<strong>${escapeHtml(patientId)}</strong>"...</p>`;
+
+      try {
+        const result = await apiRequest(`/api/users/${encodeURIComponent(patientId)}/records`);
+        recordsContainer.innerHTML = "";
+
+        if (!result.records || result.records.length === 0) {
+          recordsContainer.innerHTML = `
+            <div style="background-color: #f8fafc; border: 1px dashed #cbd5e1; padding: 14px; border-radius: 8px; color: #64748b; font-size: 13.5px; text-align: center;">
+              No previous medical records found for Username: "<strong>${escapeHtml(patientId)}</strong>".
+            </div>
+          `;
+          loadRecordsButton.textContent = "Close Records";
+          lastLoadedPatientRef = patientId.toLowerCase();
+          return;
+        }
+
+        const idList = result.records.map(r => '#' + r.id).join(', ');
+
+        // Summary Header with Table & Card View switcher
+        const summaryHeader = document.createElement("div");
+        summaryHeader.style.padding = "12px 16px";
+        summaryHeader.style.backgroundColor = "#EFF7FB";
+        summaryHeader.style.border = "1px solid #DCE9EF";
+        summaryHeader.style.borderRadius = "10px";
+        summaryHeader.style.fontSize = "13.5px";
+        summaryHeader.style.color = "#0076D2";
+        summaryHeader.style.display = "flex";
+        summaryHeader.style.justifyContent = "space-between";
+        summaryHeader.style.alignItems = "center";
+        summaryHeader.style.flexWrap = "wrap";
+        summaryHeader.style.gap = "10px";
+
+        summaryHeader.innerHTML = `
+          <div>
+            <strong>Username:</strong> ${escapeHtml(patientId)} &nbsp;|&nbsp; 
+            <strong>Total Records:</strong> ${result.total_records} &nbsp;|&nbsp; 
+            <strong>Record IDs:</strong> <span style="font-family: monospace; font-weight: bold;">${idList}</span>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+            <button type="button" class="view-toggle-btn active" id="btnToggleTable">📊 Table View (with Comments)</button>
+            <button type="button" class="view-toggle-btn" id="btnToggleCards">🗂️ Card View</button>
+            <button type="button" onclick="window.cleanupOtherRecords()" style="background:#fee2e2; border:1px solid #fca5a5; color:#b91c1c; border-radius:6px; padding:4px 10px; font-size:12px; cursor:pointer;" title="Delete all records in the database with a different username">
+              🧹 Purge Other Usernames
+            </button>
+          </div>
+        `;
+        recordsContainer.appendChild(summaryHeader);
+
+        // TABLE VIEW (Has the explicit "Comments" column)
+        const tableContainer = document.createElement("div");
+        tableContainer.id = "recordsTableViewWrapper";
+        tableContainer.className = "records-table-container";
+
+        let tableHtml = `
+          <table class="records-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">ID</th>
+                <th style="width: 90px;">Username</th>
+                <th style="width: 100px;">System</th>
+                <th style="width: 90px;">Type</th>
+                <th>Conditions</th>
+                <th>Medicines</th>
+                <th>Doctor Notes</th>
+                <th class="col-comments">💬 Comments (Patient Opinion for Doctor)</th>
+                <th style="width: 75px; text-align:center;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        result.records.forEach((record) => {
+          const badgeClass = `badge-${record.medical_system}`;
+          const condText = Array.isArray(record.condition_terms) && record.condition_terms.length > 0 
+            ? record.condition_terms.join(", ") 
+            : "None";
+          const medsText = Array.isArray(record.medicines) && record.medicines.length > 0 
+            ? record.medicines.join(", ") 
+            : "None";
+          const commentsVal = record.comments || "";
+
+          tableHtml += `
+            <tr>
+              <td><strong>#${record.id}</strong></td>
+              <td><strong>${escapeHtml(record.patient_reference || record.username || "")}</strong></td>
+              <td><span class="badge ${badgeClass}">${escapeHtml(record.medical_system)}</span></td>
+              <td><span style="font-size:12px; text-transform:capitalize;">${escapeHtml(record.record_type)}</span></td>
+              <td>${escapeHtml(condText)}</td>
+              <td>${escapeHtml(medsText)}</td>
+              <td style="color:#64748b; font-size:12px; max-width:180px;">${escapeHtml(record.notes || "None")}</td>
+              <td>
+                <div id="table-comment-display-${record.id}" class="comment-box" style="${commentsVal ? '' : 'display:none;'}">
+                  💬 <strong>Patient Opinion:</strong> <span class="comment-text">${escapeHtml(commentsVal)}</span>
+                </div>
+                <textarea 
+                  id="table-comment-input-${record.id}" 
+                  class="comment-textarea" 
+                  rows="2" 
+                  placeholder="Share your opinion regarding this prescription (relief, side-effects, questions for your doctor)...">${escapeHtml(commentsVal)}</textarea>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
+                  <button type="button" class="btn-save-comment" onclick="window.saveRecordComment(${record.id}, 'table')">
+                    💾 Save Opinion
+                  </button>
+                  <span id="table-comment-status-${record.id}"></span>
+                </div>
+              </td>
+              <td style="text-align:center;">
+                <button type="button" onclick="window.deleteRecord(${record.id})" style="background:#fee2e2; border:1px solid #fca5a5; color:#b91c1c; border-radius:6px; padding:4px 8px; font-size:12px; cursor:pointer;" title="Delete this medical record">
+                  🗑️ Delete
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        tableHtml += `</tbody></table>`;
+        tableContainer.innerHTML = tableHtml;
+        recordsContainer.appendChild(tableContainer);
+
+        // CARD VIEW (Enhanced with interactive Comments block)
+        const cardsContainer = document.createElement("div");
+        cardsContainer.id = "recordsCardsViewWrapper";
+        cardsContainer.style.display = "none";
+        cardsContainer.style.marginTop = "15px";
+        cardsContainer.style.display = "none";
+
+        result.records.forEach((record) => {
+          const card = document.createElement("article");
+          card.className = "result-item";
+          card.style.marginBottom = "15px";
+          const badgeClass = `badge-${record.medical_system}`;
+          const commentsVal = record.comments || "";
+
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h4 style="margin:0;">Record #${record.id}</h4>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <span class="badge ${badgeClass}">${escapeHtml(record.medical_system)}</span>
+                <button type="button" onclick="window.deleteRecord(${record.id})" style="background:#fee2e2; border:1px solid #fca5a5; color:#b91c1c; border-radius:6px; padding:3px 8px; font-size:11.5px; cursor:pointer;" title="Delete this record">
+                  🗑️ Delete
+                </button>
+              </div>
+            </div>
+            <p style="margin:8px 0 4px;"><strong>Username:</strong> ${escapeHtml(record.patient_reference || record.username || "")} | <strong>Type:</strong> ${escapeHtml(record.record_type)}</p>
+            <p style="margin:4px 0;"><strong>Conditions:</strong> ${escapeHtml(Array.isArray(record.condition_terms) ? record.condition_terms.join(", ") : "None")}</p>
+            <p style="margin:4px 0;"><strong>Medicines:</strong> ${escapeHtml(Array.isArray(record.medicines) ? record.medicines.join(", ") : "None")}</p>
+            <p style="margin:4px 0; color:#64748b; font-size:12.5px;"><strong>Notes:</strong> ${escapeHtml(record.notes || "None")}</p>
+            
+            <!-- COMMENTS / PATIENT OPINION COLUMN SECTION -->
+            <div style="margin-top:12px; padding:12px; background:#F4FBF9; border:1px solid #CDEFE8; border-radius:8px;">
+              <div style="font-weight:700; font-size:13px; color:#007B6D; margin-bottom:6px;">
+                💬 Comments &amp; Patient Opinion (For Doctor Review):
+              </div>
+              <div id="card-comment-display-${record.id}" class="comment-box" style="${commentsVal ? '' : 'display:none;'}">
+                💬 <strong>Patient Opinion:</strong> <span class="comment-text">${escapeHtml(commentsVal)}</span>
+              </div>
+              <textarea 
+                id="card-comment-input-${record.id}" 
+                class="comment-textarea" 
+                rows="2" 
+                placeholder="Share your opinion regarding this prescription (relief, side effects, questions for doctor)...">${escapeHtml(commentsVal)}</textarea>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+                <button type="button" class="btn-save-comment" onclick="window.saveRecordComment(${record.id}, 'card')">
+                  💾 Save Opinion
+                </button>
+                <span id="card-comment-status-${record.id}"></span>
+              </div>
+            </div>
+          `;
+          cardsContainer.appendChild(card);
+        });
+
+        recordsContainer.appendChild(cardsContainer);
+
+        // View Toggle Functionality
+        const btnToggleTable = $("#btnToggleTable");
+        const btnToggleCards = $("#btnToggleCards");
+
+        btnToggleTable.addEventListener("click", () => {
+          btnToggleTable.classList.add("active");
+          btnToggleCards.classList.remove("active");
+          tableContainer.style.display = "block";
+          cardsContainer.style.display = "none";
+        });
+
+        btnToggleCards.addEventListener("click", () => {
+          btnToggleCards.classList.add("active");
+          btnToggleTable.classList.remove("active");
+          tableContainer.style.display = "none";
+          cardsContainer.style.display = "grid";
+          cardsContainer.style.gap = "12px";
+        });
+
+        loadRecordsButton.textContent = "Close Records";
+        lastLoadedPatientRef = patientId.toLowerCase();
+
+      } catch (error) {
+        recordsContainer.innerHTML = `<p style="color:#b33f3f; font-size:13.5px;">Error loading records: ${escapeHtml(error.message)}</p>`;
+      }
+    });
+
+    // =====================================================================
+    // 5. OFFICIAL KNOWLEDGE BASE & 3-SYSTEM COMPARISON
+    // =====================================================================
+    function renderConceptCard(concept, system) {
+      const synList = (concept.synonyms || []).map(s => escapeHtml(s.synonym)).slice(0, 3).join(", ");
+      const defText = concept.definition ? escapeHtml(concept.definition) : "No formal definition provided in dataset.";
+      const typeLabel = concept.concept_type === "monograph_medicine" ? "💊 Medicine Monograph" : "🩺 Condition / Term";
+
+      let devanagariExtra = "";
+      if (concept.extra_data && concept.extra_data.term_devanagari) {
+        devanagariExtra = `<p style="margin:2px 0; font-size:14px; font-weight:bold; color:#477900;">${escapeHtml(concept.extra_data.term_devanagari)} (${escapeHtml(concept.extra_data.term_iast || "")})</p>`;
+      }
+
+      let prescribedHtml = "";
+      if (Array.isArray(concept.prescribed_medicines) && concept.prescribed_medicines.length > 0) {
+        const medItems = concept.prescribed_medicines.slice(0, 3).map(m => {
+          const medName = typeof m === "string" ? m : m.name;
+          const medAction = (m && m.action) ? ` <span style="font-size:11px; color:#0F766E; font-weight:600;">(${escapeHtml(m.action)})</span>` : "";
+          return `<li><strong>${escapeHtml(medName)}</strong>${medAction}</li>`;
+        }).join("");
+        prescribedHtml = `
+          <div class="card-prescribed-medicines">
+            <div class="card-prescribed-title">💊 Prescribed Medicines:</div>
+            <ul class="card-prescribed-list">${medItems}</ul>
+          </div>
+        `;
+      }
+
+      // No source box displayed on concept cards as requested
+      return `
+        <div class="concept-card">
+          <h4>${escapeHtml(concept.term)}</h4>
+          ${devanagariExtra}
+          <p style="margin:4px 0;"><span class="badge-code">${escapeHtml(concept.code)}</span> <span style="font-size:11px; color:#64748b;">${typeLabel}</span></p>
+          <p class="concept-def">${defText}</p>
+          ${synList ? `<p style="font-size:12px; color:#475569; margin:4px 0;"><strong>Aliases:</strong> ${synList}</p>` : ""}
+          ${prescribedHtml}
+        </div>
+      `;
+    }
+
+    function renderSystemPrescribedBox(meds, sysKey, sysTitle) {
+      if (!meds || meds.length === 0) return "";
+      let itemsHtml = meds.map(m => `
+        <div class="prescribed-item">
+          <div class="prescribed-med-name">${escapeHtml(m.name || m)}</div>
+          ${m.action ? `<div class="prescribed-med-action">${escapeHtml(m.action)}</div>` : ''}
+          ${m.details ? `<div class="prescribed-med-details">${escapeHtml(m.details)}</div>` : ''}
+          ${m.dosage ? `<div class="prescribed-med-dosage"><strong>Dosage:</strong> ${escapeHtml(m.dosage)}</div>` : ''}
+        </div>
+      `).join("");
+
+      return `
+        <div class="column-prescribed-box ${sysKey}">
+          <div class="prescribed-header">
+            <span class="prescribed-title">💊 Prescribed Medicines (${sysTitle})</span>
+            <span class="prescribed-count">${meds.length} Formulations</span>
+          </div>
+          <div class="prescribed-list">
+            ${itemsHtml}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderComparativeGrid(data, targetElement) {
+      let html = `
+        <div style="border-top: 1px solid #DCE9EF; padding-top: 18px; margin-top: 18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom: 12px;">
+            <h3 style="margin:0;">Comparison for: "${escapeHtml(data.query)}"</h3>
+            <button type="button" class="action-button action-button-outline clear-results-btn" style="min-height:32px; padding:0 14px; font-size:12.5px;">
+              Clear Results ✕
+            </button>
+          </div>
+          <div class="comparison-grid">
+      `;
+
+      // 1. Allopathy
+      html += `
+        <div class="system-column">
+          <h3><span>Allopathy</span> <span class="badge badge-allopathy">SNOMED CT</span></h3>
+      `;
+      if (data.prescribed_medicines && data.prescribed_medicines.allopathy && data.prescribed_medicines.allopathy.length > 0) {
+        html += renderSystemPrescribedBox(data.prescribed_medicines.allopathy, "allopathy", "Allopathy");
+      }
+      if (data.allopathy && data.allopathy.length > 0) {
+        data.allopathy.forEach(c => { html += renderConceptCard(c, "allopathy"); });
+      } else {
+        html += `
+          <div class="empty-system-notice">
+            <strong>No direct Allopathy match</strong><br>
+            <span style="font-size:12px;">This exact term was not found in the current SNOMED CT clinical core.</span>
+          </div>
+        `;
+      }
+      html += `</div>`;
+
+      // 2. Ayurveda
+      html += `
+        <div class="system-column">
+          <h3><span>Ayurveda</span> <span class="badge badge-ayurveda">NAMASTE SAT</span></h3>
+      `;
+      if (data.prescribed_medicines && data.prescribed_medicines.ayurveda && data.prescribed_medicines.ayurveda.length > 0) {
+        html += renderSystemPrescribedBox(data.prescribed_medicines.ayurveda, "ayurveda", "Ayurveda");
+      }
+      if (data.ayurveda && data.ayurveda.length > 0) {
+        data.ayurveda.forEach(c => { html += renderConceptCard(c, "ayurveda"); });
+      } else {
+        html += `
+          <div class="empty-system-notice">
+            <strong>No direct Ayurveda match</strong><br>
+            <span style="font-size:12px;">Synthetic pharmaceuticals do not appear in classical Ayurvedic texts. Fever/pain management is classified under <em>Jvara</em> (ज्वरः) and herbal antipyretics.</span>
+          </div>
+        `;
+      }
+      html += `</div>`;
+
+      // 3. Homeopathy
+      html += `
+        <div class="system-column">
+          <h3><span>Homeopathy</span> <span class="badge badge-homeopathy">ICD-10 / HPI</span></h3>
+      `;
+      if (data.prescribed_medicines && data.prescribed_medicines.homeopathy && data.prescribed_medicines.homeopathy.length > 0) {
+        html += renderSystemPrescribedBox(data.prescribed_medicines.homeopathy, "homeopathy", "Homeopathy");
+      }
+      if (data.homeopathy && data.homeopathy.length > 0) {
+        data.homeopathy.forEach(c => { html += renderConceptCard(c, "homeopathy"); });
+      } else {
+        html += `
+          <div class="empty-system-notice">
+            <strong>No direct Homeopathy match</strong><br>
+            <span style="font-size:12px;">Synthetic active pharmaceutical ingredients are not listed as single-drug monographs in HPI. Homeopathy addresses symptoms using diluted remedies.</span>
+          </div>
+        `;
+      }
+      html += `</div>`;
+
+      html += `</div></div>`;
+      targetElement.innerHTML = html;
+
+      const clearBtn = targetElement.querySelector(".clear-results-btn");
+      if (clearBtn) {
+        clearBtn.addEventListener("click", clearKnowledgeSection);
+      }
+    }
+
+    function renderSearchResults(data, targetElement) {
+      if (!data.results || data.results.length === 0) {
+        targetElement.innerHTML = `<div class="empty-system-notice">No matching records found in the official knowledge base.</div>`;
+        return;
+      }
+
+      let html = `
+        <div style="border-top: 1px solid #DCE9EF; padding-top: 18px; margin-top: 18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom: 12px;">
+            <h3 style="margin:0;">Search Results (${data.total_results} records)</h3>
+            <button type="button" class="action-button action-button-outline clear-results-btn" style="min-height:32px; padding:0 14px; font-size:12.5px;">
+              Clear Results ✕
+            </button>
+          </div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;">
+      `;
+      data.results.forEach(c => {
+        html += renderConceptCard(c, c.medical_system);
+      });
+      html += `</div></div>`;
+      targetElement.innerHTML = html;
+
+      const clearBtn = targetElement.querySelector(".clear-results-btn");
+      if (clearBtn) {
+        clearBtn.addEventListener("click", clearKnowledgeSection);
+      }
+    }
+
+    // Compare Knowledge Button
+    $("#compareKnowledgeButton").addEventListener("click", async () => {
+      const query = $("#knowledgeTermInput").value.trim();
+      const statusElem = $("#knowledgeStatusMessage");
+      const resultsContainer = $("#knowledgeResultsContainer");
+
+      if (!query) {
+        setMessage(statusElem, "Please enter a term or code to compare.", "error");
+        return;
+      }
+
+      setMessage(statusElem, `Searching official sources across Allopathy, Ayurveda, and Homeopathy for "${query}"...`);
+      resultsContainer.innerHTML = "";
+
+      try {
+        const data = await apiRequest(`/api/knowledge/compare?term=${encodeURIComponent(query)}`);
+        setMessage(statusElem, data.message || "Comparison completed.", "success");
+        renderComparativeGrid(data, resultsContainer);
+      } catch (err) {
+        setMessage(statusElem, `Error comparing knowledge: ${err.message}`, "error");
+      }
+    });
+
+    // Search Knowledge Button
+    $("#searchKnowledgeButton").addEventListener("click", async () => {
+      const query = $("#knowledgeTermInput").value.trim();
+      const statusElem = $("#knowledgeStatusMessage");
+      const resultsContainer = $("#knowledgeResultsContainer");
+
+      if (!query) {
+        setMessage(statusElem, "Please enter a search keyword or code.", "error");
+        return;
+      }
+
+      setMessage(statusElem, `Searching official knowledge base for "${query}"...`);
+      resultsContainer.innerHTML = "";
+
+      try {
+        const data = await apiRequest(`/api/knowledge/search?q=${encodeURIComponent(query)}`);
+        setMessage(statusElem, `Found ${data.total_results} matching concepts across official databases.`, "success");
+        renderSearchResults(data, resultsContainer);
+      } catch (err) {
+        setMessage(statusElem, `Search failed: ${err.message}`, "error");
+      }
+    });
+
+    // Clear Knowledge Comparison & Search
+    function clearKnowledgeSection() {
+      const input = $("#knowledgeTermInput");
+      input.value = "";
+      setMessage($("#knowledgeStatusMessage"), "");
+      $("#knowledgeResultsContainer").replaceChildren();
+      input.focus();
+    }
+
+    $("#clearKnowledgeButton").addEventListener("click", clearKnowledgeSection);
+
+    // Keyboard support: Enter triggers compare, Escape clears
+    $("#knowledgeTermInput").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        $("#compareKnowledgeButton").click();
+      } else if (e.key === "Escape") {
+        clearKnowledgeSection();
+      }
+    });
+
+    // Toggle Sources
+    const toggleSourcesBtn = $("#toggleSourcesButton");
+    const sourcesDiv = $("#sourcesContainer");
+    toggleSourcesBtn.addEventListener("click", async () => {
+      if (sourcesDiv.style.display === "none") {
+        sourcesDiv.style.display = "block";
+        sourcesDiv.textContent = "Loading official sources metadata...";
+        try {
+          const data = await apiRequest("/api/knowledge/sources");
+          let tableHtml = `
+            <table class="sources-table">
+              <thead>
+                <tr>
+                  <th>Source Name</th>
+                  <th>Publisher</th>
+                  <th>Official Link</th>
+                  <th>Release / Version</th>
+                  <th>Licensing</th>
+                </tr>
+              </thead>
+              <tbody>
+          `;
+          data.sources.forEach(s => {
+            tableHtml += `
+              <tr>
+                <td><strong>${escapeHtml(s.source_name)}</strong></td>
+                <td>${escapeHtml(s.publisher)}</td>
+                <td><a href="${escapeHtml(s.source_url)}" target="_blank" rel="noopener" style="color:#0076D2;">Official Link</a></td>
+                <td>${escapeHtml(s.version || "Current")}</td>
+                <td><span style="font-size:12px;">${escapeHtml(s.license_information)}</span></td>
+              </tr>
+            `;
+          });
+          tableHtml += `</tbody></table>`;
+          sourcesDiv.innerHTML = tableHtml;
+        } catch (err) {
+          sourcesDiv.textContent = "Error loading sources: " + err.message;
+        }
+      } else {
+        sourcesDiv.style.display = "none";
+      }
+    });
+
+    // =====================================================================
+    // 6. LEGACY DEMO LOOKUP
+    // =====================================================================
+    async function searchTerminology(systemOverride = null) {
+      const system = systemOverride || $("#sourceSystem").value;
+      const term = $("#sourceTerm").value.trim();
+      const resultsDiv = $("#equivalentResults");
+      resultsDiv.replaceChildren();
+
+      if (!term) {
+        resultsDiv.textContent = "Please enter a medical term.";
+        $("#sourceTerm").focus();
+        return;
+      }
+
+      resultsDiv.textContent = "Searching...";
+      try {
+        const query = new URLSearchParams({ system, term });
+        const data = await apiRequest(`/api/terminology/search?${query.toString()}`);
+        resultsDiv.replaceChildren();
 
         const message = document.createElement("p");
-        message.textContent = data.message;
+        message.textContent = data.message || "Search completed.";
         resultsDiv.appendChild(message);
 
-        if (data.results.length === 0) {
-            const noResults = document.createElement("p");
-            noResults.textContent =
-                "No mapping is currently entered for this term. This does not mean that no equivalent exists.";
-            resultsDiv.appendChild(noResults);
-            return;
+        const results = Array.isArray(data.results) ? data.results : [];
+        if (results.length === 0) {
+          const empty = document.createElement("p");
+          empty.textContent = "No mapping is currently entered for this term in the legacy table.";
+          resultsDiv.appendChild(empty);
+          return;
         }
 
-        data.results.forEach(function (item) {
-            const concept = document.createElement("p");
-            concept.textContent = "Concept: " + item.concept;
-            resultsDiv.appendChild(concept);
+        results.forEach((item) => {
+          const card = document.createElement("article");
+          card.className = "result-item";
+          const heading = document.createElement("h4");
+          heading.textContent = `Concept: ${item.concept || "Not specified"}`;
+          card.appendChild(heading);
 
-            for (const [systemName, terms] of Object.entries(item.matches)) {
-                const result = document.createElement("p");
-                const displayTerms = terms.length ? terms.join(", ") : "No mapping entered";
-                result.textContent = systemName + ": " + displayTerms;
-                resultsDiv.appendChild(result);
-            }
+          const matches = item.matches || {};
+          Object.entries(matches).forEach(([systemName, terms]) => {
+            const paragraph = document.createElement("p");
+            const displayTerms = Array.isArray(terms) && terms.length
+              ? terms.join(", ")
+              : "No mapping entered";
+            paragraph.textContent = `${systemName}: ${displayTerms}`;
+            card.appendChild(paragraph);
+          });
 
-            const status = document.createElement("p");
-           status.textContent =
-    "Verification Status: " +
-    (item.relationship === "needs_verification"
-        ? "Pending verification"
-        : item.relationship);
-            resultsDiv.appendChild(status);
+          const status = document.createElement("p");
+          status.textContent = "Verification Status: " + (item.relationship === "needs_verification" ? "Pending verification" : (item.relationship || "Not specified"));
+          card.appendChild(status);
+          resultsDiv.appendChild(card);
         });
-    } catch (error) {
-        resultsDiv.textContent =
-            "Could not connect to the backend. Make sure the FastAPI server is running.";
-    }
-});
-
-
-document.getElementById("compareRecordsButton").addEventListener("click", async function () {
-    const id1 = document.getElementById("recordId1").value;
-    const id2 = document.getElementById("recordId2").value;
-    const output = document.getElementById("comparisonContainer");
-
-    output.textContent = "";
-
-    if (!id1 || !id2) {
-        output.textContent = "Please enter both Record IDs.";
-        return;
+      } catch (error) {
+        resultsDiv.textContent = `Search could not connect: ${error.message}`;
+      }
     }
 
-    if (id1 === id2) {
-        output.textContent = "Please enter two different Record IDs.";
-        return;
+    $("#findEquivalentsButton").addEventListener("click", () => searchTerminology());
+
+    $("#clearTerminologyButton").addEventListener("click", () => {
+      const input = $("#sourceTerm");
+      input.value = "";
+      $("#equivalentResults").replaceChildren();
+      input.focus();
+    });
+
+    $("#sourceTerm").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        $("#findEquivalentsButton").click();
+      } else if (e.key === "Escape") {
+        const input = $("#sourceTerm");
+        input.value = "";
+        $("#equivalentResults").replaceChildren();
+        input.focus();
+      }
+    });
+
+    // Ayurveda shortcut
+    $("#ayurvedaSearchButton").addEventListener("click", () => {
+      $("#sourceSystem").value = "ayurveda";
+      document.querySelector("#medicines").scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => $("#sourceTerm").focus(), 450);
+    });
+
+    // =====================================================================
+    // 7. SECTION INTERSECTION OBSERVER FOR ACTIVE NAV
+    // =====================================================================
+    const navLinks = Array.from(document.querySelectorAll(".nav-link"));
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            navLinks.forEach((link) => {
+              link.classList.toggle(
+                "active",
+                link.getAttribute("href") === `#${entry.target.id}`
+              );
+            });
+          }
+        });
+      }, {
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: 0
+      });
+
+      navLinks.forEach((link) => {
+        const target = document.querySelector(link.getAttribute("href"));
+        if (target) observer.observe(target);
+      });
+    } else {
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navLinks.forEach((item) => item.classList.remove("active"));
+          link.classList.add("active");
+        });
+      });
     }
-
-    output.textContent = "Comparing records...";
-
-    try {
-        const response = await fetch(
-            "http://127.0.0.1:8000/api/compare/" +
-            encodeURIComponent(id1) + "/" +
-            encodeURIComponent(id2)
-        );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(
-                typeof data.detail === "string"
-                    ? data.detail
-                    : JSON.stringify(data.detail || "Comparison failed.")
-            );
-        }
-
-        output.textContent = "";
-
-       
-function addSection(title, text) {
-    const heading = document.createElement("h3");
-    heading.textContent = title;
-    output.appendChild(heading);
-
-    const paragraph = document.createElement("p");
-    paragraph.style.whiteSpace = "pre-wrap";
-    paragraph.textContent = text || "No comparison available.";
-    output.appendChild(paragraph);
-}
-
-
-       
-       addSection("AI Medical Record Comparison", data.ai_comparison);
-    } catch (error) {
-        output.textContent = "Error: " + error.message;
-    }
-});
-
-
-    </script>
+  </script>
 </body>
 </html>
-
